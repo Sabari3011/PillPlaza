@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/shop.css'%}">   
+   
+</head>
+<body>
+    {% csrf_token %}
+  <div class="container " id="opener">
+<div class="row ms-auto mb-3">
+
+  <div class="col dropdown d-inline ">
+    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+      Category
+    </button>
+    <ul class="col dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+     {% for item in category %}
+     <li><a class="dropdown-item " href="{% url 'shop' item.pk %}">{{item.name}}</a></li>
+     
+     {% endfor %}
+    </ul>
+  </div>
+
+  <form action="/shop" class="col input-group w-50 ms-auto rounded-pill ">
+      <input type="text" class="form-control" name="q" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAASpJREFUSEvVldGRwjAMRJdOjkqASoBK4Co5qASoBKgE5jESowu2HC7h4/STSWzrSeu1M9GHY/Lh/MoAW0kzSXNJF0lHSVdJfO8dJQAJfyR9VbIAWxuwCeoCSH6wVVT8bYmAMba0J1MWfSBdwNkq31mVpQqRaGOyTVstRIAvpHKqy4Iu6YgO0z2JAHRfWeV0kIVL2SwmAlwe2mYjs2BPmM+8VKa/AoDfrIL0LMVB17WPO5ASSTMzPPgR4IuaupqV395kdKULnpk73AxN/bsd8B4PGgn8oDEGGP8zh2jKUwJ4Iu+k5CTA+3DYKKJq65oD/Grwyw4QiU/hYLkpGKtKOuS6jnJWIUMAJPXrxaV86WQooAkZA9CF8K94bvpYAIdghF+OGhNQvBz/P+AOBx9EGcOnrJwAAAAASUVORK5CYII="/></button>
+    </form>
+  </div>
+
+  
+    {% if cattype %}
+    <h1 class="text-center fw-bold">{{cattype}} Products</h1>
+    <hr>
+    {% else %}
+    <h1 class="text-center fw-bold">Products</h1>
+    <hr>
+    {% endif %}
+
+    {% if nostock %}
+    <div class="text-center fw-bold">
+
+      <h4 class="text-center fw-bold">Sorry, No stock right Now ! ☹</h1>
+        <a href="/shop" class="btn btn-success mt-2">Back to Shop</a>
+      </div>
+  {% endif %}
+
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% load mathfilters %}
+{% for item in products %}
+    
+    
+<div class="col pt-2">
+      <a href="/product/{{item.pk}}" class="text-dark text-decoration-none">
+
+      <div class="card h-100 border border-secondary border-req">
+        <div class="p-2 d-inline">
+          {% if item.superbadge %}
+          <small class="text-dark fw-bold bg-warning badge rounded-pill">{{item.superbadge}}</small>
+          {% endif %}
+        </div>
+        <div class="float-end me-2 ">
+          <i class="fa fa-star text-warning"> <span class="text-dark fw-bold"> {{item.ratings}}</span></i>
+        </div>
+        <img src="{{item.ProductImage.url}}" class="card-img-top" alt="{{item.ProductImage}}">
+        {% comment %} <div class=" progress mx-4 mt-1" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" style="width:{{item.ratings|mul:20}}%">Review {{item.ratings}} of 5</div>
+          </div> {% endcomment %}
+        <div class="card-body">
+            <h4 class="card-title">{{item.name}}</h4>
+            <h5 class="fw-bold">&#8377;{{item.sellingprice}}  <small class="text-secondary text-decoration-line-through fs-6">&#8377;{{item.markedprice}}</small></h5>
+            <h6 class="card-text fw-bold text-danger">{{item.category_type}}</h6>
+            <p class="card-text">{{item.description}}</p>
+        </div>
+        {% comment %} <a class="btn btn-primary mt-auto mx-5  mb-3" type="button" href="/product/{{item.pk}}">View Product</a> {% endcomment %}
+           
+      </a>
+    </div>
+</div>
+
+
+{% endfor %}
+
+  </div>
+
+
+
+
+    
+</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+</body>
+</html>
+    {% endblock  %}
+
+
+    

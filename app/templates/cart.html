@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/cart.css'%}">   
+   
+</head>
+<body>
+    {% load mathfilters %}
+
+    <div id="opener" style="background-color: #009579;">
+        
+        {% if user.is_authenticated %}
+        
+        
+    
+        <div class="card">
+            <div class="row">
+                <div class="col-md-8 cart">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col"><h4><b>Shopping Cart</b></h4></div>
+                            <div class="col align-self-center text-right text-muted">{{count}} items</div>
+                        </div>
+                    </div>  
+
+
+{% if count == 0 %}
+<div class="text-center">
+    <h3>Your Cart is Empty</h3>
+<a href="/shop" class="btn" type="button">Shop Now</a>
+</div>
+
+{% endif %}
+
+
+    
+                {% for product in cart %}    
+                    <div class="row text-center border-bottom border-top">
+                        <div class="row main align-items-center">
+                           
+                            
+                            <div class="col-2 ">
+                                
+                                <a href="/product/{{product.product.pk}}" class="text-decoration-none">
+                                    <img class="img-fluid " src="{{product.product.ProductImage.url}}">
+                                </a>
+                                
+                                </div>
+                            <div class="col">
+                                <div class="row text-wrap text-center"><h5>{{product.product.name}}</h5></div>
+                                <div class="row text-muted text-center"><p>{{product.product.quantity}}</p></div>
+                            </div>
+                            
+                                <div class="col-sm">
+                            <div class="col-sm">
+                                {% if  product.product.category_type.pk == 4 %}
+                                <span class="" >{{product.product_qty}}</span>
+
+                            {% else %}
+                                <a href="/updatecart/sub/{{product.product.pk}}/{{product.pk}}" class="text-decoration-none text-danger d-inline fw-bolder">-</a>
+                                <span class="" >{{product.product_qty}}</span>
+                                <a class="text-decoration-none text-success fw-bolder" href="/updatecart/add/{{product.product.pk}}/{{product.pk}}">+</a>
+                                {% endif %}
+
+                            </div>
+                            <div class="col-sm">
+                                <div class="fw-bold mt-1">&#8377;{{product.product_qty |mul:product.product.sellingprice}}
+                                    <a class="close ms-2 text-decoration-none float-end text-danger" href="/updatecart/del/{{product.product.pk}}/{{product.pk}}"><span class="material-symbols-outlined">
+                                        delete
+                                        </span></a></div>
+
+                            </div>
+                        
+                            </div>
+
+                            
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+                    <div class="back-to-shop text-muted"><a href="/shop" class="text-success">&leftarrow; Back to shop</a></div>
+                
+                {% if pp > 0 %}
+                <div class="col my-3"><h4><b>Prescriptive Cart</b></h4></div>
+                    {% for product in PrescriptiveProduct %}
+                <div class="row text-center border-bottom border-top">
+                    <div class="row main align-items-center">
+                        <div class="col-2 "><img class="img-fluid " src="{{product.product.ProductImage.url}}"></div>
+                        <div class="col">
+                            <div class="row text-wrap text-center"><h5>{{product.product.name}}</h5></div>
+                            <div class="row text-muted text-center"><p>{{product.product.quantity}}</p></div>
+                        </div>
+                        
+                            <div class="col-sm">
+                                <div class="col-sm">
+                                    <span class="fw-bold text-dark">Status: <span class="approve text-primary 
+                                        {% if product.approve == "Approved" %}
+                                        text-success
+                                        {% elif product.approve == "Declined" %}
+                                            text-danger
+                                        {% endif %}
+                                        ">{{product.approve}}</span></span>
+                                </div>
+                        <div class="col-sm">
+                            <span class="fw-bold">Qty:  {{product.product_qty}}</span>
+                        </div>
+                        <div class="col-sm">
+                            <div class="fw-bold mt-1">&#8377;{{product.product_qty |mul:product.product.sellingprice}}
+                                <a class="close text-danger ms-2  float-end text-decoration-none" title="Delete" href="/delTemp/{{product.pk}}"><span class="material-symbols-outlined">
+                                    delete
+                                    </span></a></div>
+
+                        </div>
+                        {% if product.approve == "Approved" %}
+                        <a href="/addtotop/{{product.pk}}" id="addtotop" class="border bg-success fw-bold text-light p-1 px-2 mt-2 rounded" type="button">Add to Top</a>
+                        {% endif %}
+
+                        </div>
+
+                        
+                    </div>
+                </div>
+                
+                
+                
+                        {% endfor %}
+                {% endif %}
+
+
+
+
+                </div>
+
+                <div class="col-md-4 summary">
+                    <div><h5><b>Summary</b></h5></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col" style="padding-left:0;">ITEMS {{count}}</div>
+                        <div class="col text-right">&#8377; {{totalAmt}}</div>
+                    </div>
+                    <form id="formid" method="POST" action="/conformorder">
+                        {% csrf_token %}
+                        <p>ADDRESS:</p>
+                        <textarea class="w-100 rounded-6" name="address"  rows="5" required></textarea>
+                        <p>PINCODE:</p>
+                        <input id="code" name="pincode" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" placeholder="Enter your code" required>
+                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                            <div class="col">TOTAL PRICE</div>
+                            <div class="col text-right">&#8377;{{totalAmt}}</div>
+                        </div>
+                        <button id="checkout" class="btn" type="submit" onclick="submitHandler()">CHECKOUT</button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+
+
+{% else %}
+
+<div class="container text-center">
+    <div class="card" >
+    <div class="card-body">
+    <h3>Please Login to continue</h3>
+      <a href="/loginpage" class="btn btn-success rounded-pill fs-5" type="button" style="width:7rem">Login</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+        
+        {% endif %}
+        
+    </div>
+    
+    
+    
+    
+    <script>
+        
+            let btn=document.getElementById('checkout')
+            if({{count}} == 0){
+                    btn.disabled=true;
+                }
+                else{
+                    btn.disabled=false;
+                }
+        
+               function submitHandler(){
+                   
+
+                       let btn=document.getElementById('checkout')
+                       
+                    btn.innerHTML="Send OTP"
+                               
+               }
+                
+               const fewSeconds = 4
+ 
+document.querySelector('#checkout').addEventListener('click', (e) => {
+
+
+    
+    setTimeout(() => {
+        e.target.disabled = true
+       }, 1000)
+
+  setTimeout(() => {
+   e.target.disabled = false
+  }, fewSeconds * 1000)
+})
+
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+</html>
+    {% endblock  %}
+
+    

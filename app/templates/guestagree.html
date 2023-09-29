@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load mathfilters %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Order Confirmation</title>
+</head>
+<body style="background-color :#009579">
+    
+<div class="container mt-auto">
+    <h1 class="text-center text-light fw-bold mt-4">Order Confirmation</h1>
+    <hr class="text-dark">
+
+    <div class="card mt-3 mx-auto">
+        <div class="card-body">
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+            
+            {% for i in products %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{i.product.name}}</td>
+                    <td>{{i.quantity}}</td>
+                    <td>&#8377;{{i.quantity |mul:i.product.sellingprice}}</td>
+                </tr>
+                
+                {% endfor %}
+                
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Handling fee</th>
+                    <th scope="col"></th>
+                    <th scope="col">&#8377; 10</th>
+                  </tr>
+
+                </tbody>
+              </table>
+
+              {% for ord in order %}
+              <div class=" me-5">
+
+                  <p class="mt-1 d-inline">Total Products - {{ord.totalproducts}}</p>
+              
+                  <p class="float-end fw-bold">Total Price {{ ord.totalprice }}</p>
+                  
+                </div>
+                {% if not ord.agree %}
+                <div class="container d-flex align-items-center justify-content-center">
+                    
+                    <a href="/guest/agree/{{ord.guestid}}" class="btn btn-success  mt-3 me-1" role="button" >Confirm Order</a>
+                    
+                    <a href="/guest/disagree/{{ord.guestid}}" class=" btn btn-danger mt-3 " role="button" >Cancel Order</a>
+                    
+                </div>   
+                {% endif %}             
+                
+                {% endfor %} 
+                <div class="text-center ">
+
+                  
+                    <a href="/"  class="fw-bold text-decoration-none ms-5"><h5 class="">Back to Home ?</h5></a>
+                  
+                </div>
+                  
+                </div>
+      </div>
+
+</div>
+</body>
+</html>

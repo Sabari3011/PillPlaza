@@ -1,0 +1,25 @@
+#opener{
+  height: 70px;
+}
+
+#carouselExampleDark .carousel-item img{
+  object-fit:cover;
+  object-position: center;
+  overflow: hidden;
+  height: 50vh; 
+}
+
+
+.carousel-caption
+{
+  background-color: rgba(245, 239, 239, 0.3);
+}
+.card img{
+  object-fit:cover;
+  object-position: center;
+  overflow: hidden;
+  height: 30vh; 
+}
+a{
+  text-decoration: none;
+}

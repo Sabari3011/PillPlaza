@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuestForm</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/lander.css'%}">   
+   
+</head>
+
+<body style="background-color :#009579">
+    
+  <div class="container mt-5 pt-3">
+      <h1 class="text-center text-light fw-bold mt-4">GuestForm</h1>
+      <hr class="text-dark">
+  
+      <div class="card mt-3 ">
+          <div class="card-body">
+  
+              <form class="row g-3" method="post" action="/guestreg/" enctype="multipart/form-data" >
+                  {% csrf_token %}
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Name</label>
+                    <input  required placeholder="John" autocomplete="off" id="uname" name="guestname" type="text" class="form-control" id="inputEmail4">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="age"  class="form-label">Age</label>
+                    <input required placeholder="20"  pattern="[1-9]{1}[0-9]{1}" maxlength="2" inputmode="numeric" class="form-control num" id="age">
+                  </div>
+                  <div class="col-md-6">
+                      <label for="inputEmail4" class="form-label">Email</label>
+                      <input required name="email" title="Please Enter a valid Email" pattern="^([a-z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-z0-9\-]+\.)+))([a-z]{2,4}|[0-9]{1,3})(\]?)$" type="text" class="form-control" placeholder="xyz@gmail.com" id="email">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="contno" class="form-label">Contact number</label>
+                      <input required  name="contactno" pattern="[0-9]{10}" maxlength="10" inputmode="numeric" class="form-control num" placeholder="9876543210" id="contact">
+                    </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Address</label>
+                    <input required name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                  </div>
+                  <div class="col-md-6 ">
+                    <label for="inputZip" class="form-label">Pincode</label>
+                    <input required name="pincode" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" placeholder="Enter your code" class="form-control num" id="inputZip">
+                  </div>
+                  <div class="col-md-6 ">
+                      <label for="formFile" class="form-label">Prescription</label>
+                      <input required name="image" class="form-control" type="file" id="formFile">
+                    </div>
+  
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                  </div>
+                  <h6 class="text-danger m-0 mt-1">*Flat &#8377;10 for Handling charge.</h6> 
+
+                  <p class="text-danger m-0 mt-1">*For now Payment mode COD (cash on delivery) only available. </p> 
+                  <p class="text-danger m-0">*You place this as a guest so every Updates are only sent to 
+                    your mail id so kindly make sure the mail id is valid and active.
+                  </p>
+                  <p class="text-danger m-0">*Only the medications in the Prescription are accepted.</p>
+                  <h6 class="text-danger m-0">*After analysing the prescription Your are notified by a mail and you have to
+                    confirm or cancel the order by checking the products and Amount . Otherwise your order cannot be processed further.
+                  </h6>
+                </form>
+  
+  
+          </div>
+        </div>
+  
+      
+      
+  </div>
+  
+  
+  </body>
+    
+
+
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  
+$(function() {
+
+$('#uname').keydown(function (e) {
+
+  if (e.ctrlKey || e.altKey) {
+  
+    e.preventDefault();
+    
+  } else {
+  
+    var key = e.keyCode;
+    
+    if (!((key == 8) || (key == 13) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    
+      e.preventDefault();
+      
+    }
+
+  }
+  
+});
+
+
+$('.num').keydown(function (e) {
+
+if (e.ctrlKey || e.altKey || e.shiftKey) {
+
+  e.preventDefault();
+  
+} else {
+
+  var key = e.keyCode;
+  
+  if (!((key == 8) || (key == 13) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57))) {
+  
+    e.preventDefault();
+    
+  }
+
+}
+
+});
+
+
+
+});
+
+
+$(document).ready(function(){
+    $("#email").on('change keyup paste',function(e){
+     
+    
+      var start = e.target.selectionStart;
+      
+      //Converting
+      $(this).val($(this).val().toLowerCase());
+      
+      
+      e.target.selectionStart = e.target.selectionEnd = start;
+    })
+})
+
+</script>
+
+
+</html>
+    {% endblock  %}
+
+
+

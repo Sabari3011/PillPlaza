@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% block content %}
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/lander.css'%}">   
+    {% comment %} <link rel="stylesheet" href="{% static 'css/home.css'%}"> {% endcomment %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+   
+  
+
+</head>
+<body onload="noback()">
+  {% csrf_token %}
+  <div id="opener">
+</div>
+  
+{% comment %}---------------- slider start------------- {% endcomment %}
+
+    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="2000">
+          <img src="{% static 'ImportantImg/1.jpg'%}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block"  >
+            <h1 class="">Don't Risk your health by Waiting for offers</h1>
+            <h4>Here PillPlaza with offer Price on 365 days </h4>
+          </div>
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="{% static 'ImportantImg/2.jpg'%}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h1>It's Never Too Late</h1>
+            <h4>To be The Healthiest You</h4>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'ImportantImg/3.jpg'%}" class="d-block w-100 " alt="...">
+          <div class="carousel-caption d-none d-md-block ">
+            <h1>Loaded with Medical Devices</h1>
+            <h4>PillPlaza with Professional Devices</h4>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+{% comment %}------------------ slider end ------------------{% endcomment %}
+
+
+{% comment %} {{
+  
+  {{item.image}}
+  
+}} {% endcomment %}
+
+<div class="container mt-4 ">
+  <a href="/guestreg" class="text-decoration-none">
+
+    <div class="container bg-dark rounded-pill text-center mb-2 w-100 ">
+      <h5 class="text-light fw-bold pb-2 m-0">Buy with One Click <span class="fs-6 text-secondary"> Guest Order</span> <span class="fs-1 mt-2 ms-5 fw-bold"> &rarr; </span> </h5>
+    </div>
+
+  </a>
+  <h1 class="text-center fw-bold">Categories</h1>
+  <hr>
+  <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
+    {% for item in category %}
+    <div class="col">
+      <a class="text-decoration-none text-dark"href="{% url 'shop' item.pk %}">
+      <div class="card h-100">
+        <img src="{{item.image.url}}" class="card-img-top" alt="{{item.name}}">
+        <div class="card-body">
+          <h4 class="card-title text-center fw-bold">{{item.name}}</h4>
+          <h6 class="card-text">{{item.description}}</h6>
+          
+          <a href="{% url 'shop' item.pk %}" class="btn btn-primary mt-2">Shop Now</a>
+        </div>
+      </div>
+    </a>
+    </div>
+    {% endfor %}
+    
+    </div>
+  </div>
+
+
+
+
+
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  
+  <script>
+ function noback(){
+  window.addEventListener('popstate', function (event) {
+  history.pushState(null, document.title, location.href);
+});
+  return false;
+ }
+ window.addEventListener('popstate', function (event) {
+  history.pushState(null, document.title, location.href);
+});
+
+  </script>
+
+
+</body>
+</html>
+
+{% endblock  %}

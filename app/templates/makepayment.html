@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Payment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+ {% load static  %}
+  <link rel="stylesheet" href="{% static 'css/home.css'%}">
+</head>
+<body>
+  <div class="container">
+    
+    <div class="login form">
+      <header>Order</header>
+      <form action="" method="POST" class="text-center">
+        {% csrf_token %}
+        <h5 class="text-primary mb-4">Pay and Place Order</h5>
+        <button id="rzp-button1" class="btn btn-primary mb-3">Pay Now</button>
+    
+      </form>
+      <div class="signup">
+        <span class="signup">Go Cart ?
+         <a href="\cart\">Cart</a>
+         
+        </span>
+      </div>
+    </div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    var options = {
+        "key": "rzp_test_tGIL7CbLLpBEKz", // Enter the Key ID generated from the Dashboard
+        "amount": "{{totalAmt}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "PillPlaza", //your business name
+        "description": "Test Transaction",
+        "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxANEA4PDRANDQ8NEA0NDQ0ODQ8NDg0OFREWFhURExUYHSggGBolGxUVIT0hJSktLi4uFx8zRD8sNyguLysBCgoKDg0OFxAQGysdIB8rLSstKy0uKy0vKystLS0tNystNy0tKy0tLSstLS0wLS0tNzIrLS0vLS0tLTctLSsxNf/AABEIAOEA4QMBEQACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAAAwQBAgYFB//EADoQAQACAQICBwQHBwUBAAAAAAABAgMEEQUhBhIiMUFRgRNhcZEUIzJCUnLBQ2KhsbLR8FOT0uHiJP/EABoBAQADAQEBAAAAAAAAAAAAAAACAwUEAQb/xAArEQEAAgEEAgAFAgcAAAAAAAAAAQIDBBESITFBBRMiMlGh8EJhcYGx0eH/2gAMAwEAAhEDEQA/APuIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPK4tx/BpN4tPXv/AKddt4+M+CnLnpj8ufNqceLz5clrumeoyTMYYrij3R1resz+kM++uvP29MvJ8Svb7Onk5eK6m/O2bN/uW/up+dknzMqJ1GWfNpWNFxnU0ns58vwtbrx8rbwtpmyR7XY9Rlj+J1nB+k8ZJimpiuO08oyV5Umf3on7P8vg7sWoi3Vmlh1UW6t06R0usAAAAAAAAAAAAAAAAAAAAABynSnpL7LrYcE9qOV8keE+Vff73DqdVw+mrN1ms4fTTy4HLkted7b82RMzae2Ha02neUlLRCyFlemuTM93S3QRmnfkRJE9rOHWTE7WXVsvpfby7zojxrrxGDJO87fU2nyj7k/p8vJo4Mu/UtbTZuUcZdS6XWAAAAAAAAAAAAAAAAAAAA83pDrvo+C9qzta3YpPlM+Py3U578KTKjUZPl45l8xyz17efn8WJbuXztvqszbHD3Z7xhS1M9XkhbpXbpVtd5uju0rfaUolOs9rd69au8L9t4dG28J+FayaWjnMTWYmJjviYnlMLMV9l2G+0vrXCNdGpw0yRtv9m8R928d8fr6w1aW5Ru2qX5V3XUkwAAAAAAAAAAAAAAAAAAHKdPskxTDHh9ZP9Lh107Vhm/EZ2rDgtPfmyayxKT2ntZZus3edq7c1V57U3ntVmUYlGJaylCULejyeEr6WdWO3pjLHUtvCXiUvE7u16EcW6mSMdp7Gbavwv92fXu9Yd+nyemnpcve35d+7WgAAAAAAAAAAAAAAAAAAA5jp5g62Glvw2tWfWP8Ay49bXekSz/iFd8cS+e4YY9WDVNMJrVHV0V3hTeFSUIVw1lKE4Zx26sp1nZZWdpX7x16ujzDq8wzw3UTS23cljttKeG+0vrnAeIfScNLzPbjsZPzR4+vf6tbHblXdt47867vRTWAAAAAAAAAAAAAAAAAAKfF9J7fDkx+M13r+aOcK8tOdZhVmpzpNXybJTqXmJ82DMcbbPmbRxtskSSQZ6bwjMI2jd5uSu0qZc89NHsPYaylCcLWjy+Er8dnTjt6M9epbeEp6ndKep3dh0K4t7PJFbT2Mu1Le633bfOdvV3afJ3s0tLl2nb8voruaQAAAAAAAAAAAAAAAAAAD57034Z7LL7WsdnLvb4W+9H6+rJ1uLa3KPbE+IYONuUe3O47buOJZ9ZbWhJJ5+qx7KbwovCpKCDEpwlBS207p1nZZWdpXrduro8w6vMMcPz9S20vcdtpTxW2nZ9c6N8R+k4KzM73ptTJ5z5W9Y/ju1sd+VW3hvzru9VYtAAAAAAAAAAAAAAAAAAefx3h8anBem3ajtU/NHh69yrNj50mFOfF8yk1fKrUmlprLCmOM7PmpjjbZIkkg1FN4RtCNo3eZeuyhzy0l7D2GJTThPpssR3ztHvXUsvx29LuLhOfLaLY8cxX8eT6uvpvzn0h010+S07xG39XZTSZbzvEbR/P97u26J6bJprxN8lJreOpesVnb3TvM+fu8ZaGLFNPbUw4Zx+93arnQAAAAAAAAAAAAAAAAAAA+e9N+F+yy+1pHZy72+FvvR+vqytbi2tyj2xPiGDjblHtz2O27jiXBWWbQ9evO1WPaVN4UXhV28PGeUR4zPlCMIR3O0Pa4d0Xz5trZP/npP443yTHur4evyd+HQ3t3b6Y/Vp4PhuS/d/pj9f8An76dLoOBYNNtNada8ftMnbv6eFfRpYtPjx/bH92xh0uLF9sd/n29K0bwudCPHO0g6bh2o9pSN/tV5W9/vei0AAAAAAAAAAAAAAAAAADz+OaCNThvTbtfap+aPD17vVVmx86TCnPi+ZSavldqTS01nlzYUxxnZ81McbbJEk1vR9Hs2r2mI9njn9reO+P3K/e+Pcvx6S+TvxDoxaG+bueo/P8Ap03DOBYNJzpXrZO6ct+1efh5ejRw6fHi+2O/z7a+DSYsP2x3+fa7aF7pQ3gEcAjyVBe4VqupaN+63Zt/d6OiAAAAAAAAAAAAAAAAAAABwPTPg9q5q3xVm3t57Nax+08Y/X1ZerwTyiax5Y2u00zeJpHn/K/wXo3THEX1G2TJymKd+On/ACn+DowaWKd27l1abQ1x937n9Ie/MOt3q2SoILQCK0AhtANbRuCOltpB0vC9R7Sm0/aptE++PCf88nouAAAAAAAAAAAAAAAAAAAjzYovEbxEzXnWfKdpjl6TMeoKccpeDaQQ5KgrXgENoBFeARgiyQC5wvVezvEz3Tyt8PN6OlAAAAAAAAAAAAAAABjcDcGQAVNTTad/P+bwaQDW0ArZKggtAIrwCC4I7yCGt9pB1HCNR7THHnTsz8PD/Pc9F4AAAAAAAAAAAGAAY3BjcGNwOsB1wYybWjb5AqRyl4NpBDlqCteAQ3gFe4K2SQVclwet0Z1X1k0/FWY9Y5/y3ejqAAAAAAAAAAAYABgGJkGsyDWZBiZBrNgYm4IrTvLwbQDW0AqZIBBcFbIClmsCjnyAs9Gsm+pxxHnb+mXo7zcGQAAAAAAAAAAYkGsg1kGJBrINJkEdrAjtYGnXBNWf4vBtIKuaAU8kgqZrAoZ7g8zUXB7XQzSzOS+ae6kTWs+dp/63+cPR2MWBJEg2AAAAAAAAAABiYBrMA0mAaSDSwIrAisDSQb4r+E+gJt3ggzAo5gUM9gednkEWm0Vs1orHKPG090Q9Ha8Pw1xUrjp3V+cz4zILtQSQDeAZAAAAAAAAAABgGJgEdqgitAIbyCvksCvfKCG2aQWMGs8Lcp8/Cfi8EuTICjnuDzdTkiOczER5zOwKFMkZJ2rEzHjO20PR7WijbaNur7ge1ppBcrIJag2gGwAAAAAAAAAAMAxINJBrMAjtTcFfJgBUy4JBVyUmAQWBHbJMd0zHqCrlte3jb05AgjQTad7bz75mZkF3Bp4ryiAXMWKQetpKTtzBdrAJYgGwMgAAAAAAAAAAwDAMTANZgGswDEwDSagivhifAFfJoqz4AgtoY8gaTpfcDH0SfIEtNGC3i00QCzjpsCeKg22BkAAAAAAAAAAAAGAAY2BiYBrNQY2BjYGOqDHUBj2YHswbRQG0VBvWoNwAAAAAAAAAAAAAAAAAYA2BjYGNgNgOqB1QNgZ2BnYGQAAAAAAAAAAAAAAAAAAAAAAAY2BkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//2Q==",
+        "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "callback_url": "/addorder/",
+       
+        "notes": {
+            "address": "PillPLaza"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+    </script>
+      
+  <script src="{% static 'js/home.js'%}"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

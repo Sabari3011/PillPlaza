@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/orders.css'%}">   
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body class="" style="background-color :#009579">    
+    <div class="container-sm " style="background-color :#009579" id="opener">
+
+        {% if user.is_authenticated %}
+        <div class="container">
+            <h1 class="text-center text-light fw-bold ">Active Orders 
+                <span class="rounded-circle bg-warning fs-6 px-1 text-dark"> {{ordercount}}</span>
+            </h1>
+        <hr class="text-dark">
+
+        </div>
+
+        {% if  ordercount == 0 %}
+
+        <div class="bg-light p-2 rounded-pill w-100 my-2 container text-center">
+            <h4>No Active Orders</h4>
+            <a href="/shop" class="btn btn-primary" type="button">Shop Now</a>
+        </div>
+
+        {% else %}
+        {% for i in order %}
+    
+        <a href="/invoice/{{i.orderid}}" class="text-decoration-none" >
+
+            <div class="card card-timeline px-2 rounded-6 w-100 my-2 "> 
+                <div class="p-1">
+                    <p class="fw-bold m-0">ID: {{i.orderid}}</p>
+                    <p class="fw-bold text-secondary m-0 float-sm-end"  style="font-size:12px;">{{i.created_at}}</p>
+                    <p class="fw-bold text-secondary m-0  "  style="font-size:12px;">Total Products: {{i.totalproducts}}</p>
+                    <p class="fw-bold text-secondary m-0 "  style="font-size:12px;">Total Price: &#8377;{{i.totalprice}}</p>
+                <p class="fw-bold text-secondary m-0 "  style="font-size:12px;">Address: {{i.address}} -{{i.pincode}}</p>
+
+            </div>
+            
+            <ul class="bs4-order-tracking"> 
+                <li class="step 
+                            {% if i.status > 0%}
+                            active
+                            {% endif %}
+                "> 
+                    <div>
+                        <i class="bi bi-truck"><span class="material-symbols-outlined text-center pt-2 fs-6">
+                            order_approve
+                            </span></i>
+                    </div> Order Placed 
+                </li> 
+                    <li class="step {% if i.status > 1%}
+                        active
+                        {% endif %}"> 
+                        <div><i class="">
+                            <span class="material-symbols-outlined text-center pt-2 fs-6">
+                                precision_manufacturing
+                            </span>
+                            
+                            
+                            
+                        </i>
+                    </div>Shipped</li> <li class="step {% if i.status > 2 %}
+                        active
+                        {% endif %}">
+                        <div>
+                            <i class="bi bi-truck"><span class="material-symbols-outlined text-center pt-2 fs-6">
+                                local_shipping
+                            </span></i>
+                        </div> Out for delivery </li> 
+                        <li class="step {% if i.status > 3%}
+                            active
+                            {% endif %}"> <div>
+                                
+                                <i class="fas  "><span class="material-symbols-outlined text-center pt-2 fs-6">
+                                    celebration
+                                </span></i></div> Delivered </li> 
+                            </ul>
+                            
+                            <h5 class="text-center">
+                                {% if i.status == 1 %} Your Order has been Placed successfully 
+                                
+                                {% elif i.status == 2 %}
+                                Your Order has been Dispatched and Shipped
+                                
+                            {% elif i.status == 3 %}
+Your Order is out for Delivery!!!
+
+                            {% endif %}
+                        </h5>
+                        <form action="/cancel/" method="post" class="text-center">
+                            {% csrf_token %}
+                            <input type="hidden" name="cancelord" value={{i.orderid}}>
+                            <button  class="btn mx-auto my-1 text-light fw-bold" type="submit" style="background-color: red;">Cancel Order</button>
+                        </form>
+                        
+                        
+                    </div>
+                </a>
+                    {% endfor %}
+                    
+                    {% endif %}
+                    
+                    {% if pcount > 0 %}
+                    <div class="container">
+                        <h1 class="text-center text-light fw-bold mt-5">
+                            <span class="material-symbols-outlined me-2 fs-3">
+                                history
+                            </span>History
+                        </h1>
+                        <hr class="text-dark">
+                    </div>
+                    {% for i in previous %}
+                    
+                    <a href="/invoice/{{i.orderid}}" class="text-decoration-none" >
+
+                    
+
+                    <div class="card mx-auto my-2 
+                          
+                    {% if not i.review and i.status != 5%}
+                    border-3 border-warning
+                    {% elif i.status == 5%}
+                    border-3 border-danger      
+                    {% endif %}
+         " style="max-width:90vh">
+                        <div class="card-body">
+                          <h6 class="card-title fw-bold">ID: {{i.orderid}}
+                            <p class="fw-bold text-secondary m-0 float-end"  style="font-size:12px;">{{i.created_at}}</p>
+
+
+                          </h6>
+                          
+                        
+                          <p class="fw-bold text-dark m-0 float-sm-end"  style="font-size:12px;">Status: 
+                            {% if i.status == 4 %}
+                            <span class="text-success fs-6 "> Delivered</span>
+                            {% elif i.status == 5  %}
+                            <span class="text-danger fs-6 ">Cancelled</span>
+                            {% endif %}
+
+                          </p>
+                          <p class="fw-bold text-dark m-0 "  style="font-size:12px;">Total Products: {{i.totalproducts}}</p>
+                          <p class="fw-bold text-dark m-0"  style="font-size:12px;">Total Price: &#8377;{{i.totalprice}}</p>           
+                          <div class="text-center">
+                            {% if  i.review%}
+                            <p class="fw-bold mb-1 text-success">Already Reviewed...</p>
+                            {% elif i.status != 5 %}
+                            <p class="fw-bold mb-1 text-danger">Not Yet Reviewed !!!</p>
+
+                            {% endif %}
+                              <a href="/invoice/{{i.orderid}}" class="btn btn-primary py-0 px-2" type="button">View Detail</a>
+                            </div>
+                        </div>
+                        
+                        {% comment %} <div class="w-100  float-bottom " style="height:5px ; background-color: red;"></div> {% endcomment %}
+                    </div>
+                </a>
+                    {% endfor %}
+                    
+                    {% endif %}
+
+        
+
+{% else %}
+<div class="container text-center">
+    <div class="card" >
+        <div class="card-body">
+            <h3>Please Login to continue</h3>
+            <a href="/loginpage" class="btn btn-success rounded-pill fs-5" type="button" style="width:7rem">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+    </div>
+
+   
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/v4-font-face.css'></script>
+</body>
+</html>
+    {% endblock  %}
+
+

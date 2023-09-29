@@ -1,0 +1,16 @@
+#opener{
+    padding-top: 90px;
+    min-height: 70vh;
+}
+
+.card-img-top{
+    object-fit:contain;
+    object-position: center;
+    overflow: hidden;
+    height: 15vh; 
+
+  }
+  .border-req{
+    box-shadow: 10px 10px 10px rgb(94, 93, 93,.4);
+    
+  }

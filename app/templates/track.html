@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order</title>
+
+    <link rel="stylesheet" href="{% static 'css/orders.css'%}">   
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/lander.css'%}">   
+   
+</head>
+<body style="background-color :#009579">
+    
+
+<div class="container mt-5 pt-5" style="min-height: 75vh">
+    <h1 class="text-center text-light fw-bold mt-4">Order Tracking</h1>
+    <hr class="text-dark">
+
+    <div class="card py-4">
+        <form  action="" method="GET" class="card-body row  d-flex align-items-center justify-content-center">
+        
+
+                
+          <div class="col-8 mt-1">
+    <input type="text" class="form-control" placeholder="Enter your Order Id" name="orderid">
+  </div>
+  <div class="col-12 text-center mt-3">
+    <button type="submit" class="btn btn-primary px-5">Track now</button>
+  </div>  
+
+        </form>
+
+
+{% comment %} start {% endcomment %}
+
+{% if order %}
+{% for i in order %}
+<a href="/invoice/{{i.orderid}}" class="text-decoration-none text-dark">
+<div class="card card-timeline px-2 rounded-6 w-100 my-2 "> 
+        <div class="p-1">
+            <p class="fw-bold m-0">ID: {{i.orderid}}</p>
+            <p class="fw-bold text-secondary m-0 float-sm-end"  style="font-size:12px;">{{i.created_at}}</p>
+            <p class="fw-bold text-secondary m-0  "  style="font-size:12px;">Total Products: {{i.totalproducts}}</p>
+            <p class="fw-bold text-secondary m-0 "  style="font-size:12px;">Total Price: &#8377;{{i.totalprice}}</p>
+        <p class="fw-bold text-secondary m-0 "  style="font-size:12px;">Address: {{i.address}} -{{i.pincode}}</p>
+
+    </div>
+    
+    <ul class="bs4-order-tracking"> 
+        <li class="step 
+                    {% if i.status > 0%}
+                    active
+                    {% endif %}
+                    "> 
+            <div>
+                <i class="bi bi-truck"><span class="material-symbols-outlined text-center pt-2 fs-6">
+                    order_approve
+                    </span></i>
+            </div> Order Placed 
+        </li> 
+            <li class="step {% if i.status > 1%}
+                active
+                {% endif %}"> 
+                <div><i class="">
+                    <span class="material-symbols-outlined text-center pt-2 fs-6">
+                        precision_manufacturing
+                    </span>
+                    
+                    
+                    
+                </i>
+            </div>Shipped</li> <li class="step {% if i.status > 2 %}
+                active
+                {% endif %}">
+                <div>
+                    <i class="bi bi-truck"><span class="material-symbols-outlined text-center pt-2 fs-6">
+                        local_shipping
+                    </span></i>
+                </div> Out for delivery </li> 
+                <li class="step {% if i.status > 3%}
+                    active
+                    {% endif %}"> <div>
+                        
+                        <i class="fas  "><span class="material-symbols-outlined text-center pt-2 fs-6">
+                            celebration
+                        </span></i></div> Delivered </li> 
+                    </ul>
+                    
+                    <h5 class="text-center">
+                        {% if i.status == 1 %} Your Order has been Placed successfully 
+                        
+                        {% elif i.status == 2 %}
+                        Your Order has been Dispatched and Shipped
+                        
+                    {% elif i.status == 3 %}
+                         Your Order is out for Delivery!!!
+            {% elif i.status == 4 %}
+                    Your Order is  Delivered!!!
+            
+                    {% elif i.status == 5 %}
+                    Your Order is cancelled
+            
+                    {% endif %}
+                </h5>
+                
+                
+                
+            </div>
+        </a>
+            {% endfor %}
+            
+            {% endif %}
+
+
+
+{% comment %} guest start {% endcomment %}
+
+
+
+{% if guest %}
+{% for i in guest %}
+<a href="/permit/{{i.guestid}}" class="text-decoration-none text-dark">
+
+
+<div class="card card-timeline px-2 rounded-6 w-100 my-2 "> 
+        <div class="p-1">
+            <p class="fw-bold m-0">ID: {{i.guestid}}</p>
+            <p class="fw-bold text-secondary m-0 float-sm-end"  style="font-size:12px;">{{i.created_at}}</p>
+            <p class="fw-bold text-secondary m-0  "  style="font-size:12px;">Total Products: {{i.totalproducts}}</p>
+            <p class="fw-bold text-secondary m-0 "  style="font-size:12px;">Total Price: &#8377;{{i.totalprice}}</p>
+        <p class="fw-bold text-secondary m-0 "  style="font-size:12px;">Address: {{i.address}} -{{i.pincode}}</p>
+
+    </div>
+    
+    <ul class="bs4-order-tracking"> 
+        <li class="step 
+                    {% if i.status > 0%}
+                    active
+                    {% endif %}
+                    "> 
+            <div>
+                <i class="bi bi-truck"><span class="material-symbols-outlined text-center pt-2 fs-6">
+                    order_approve
+                    </span></i>
+            </div> Order Placed 
+        </li> 
+            <li class="step {% if i.status > 1%}
+                active
+                {% endif %}"> 
+                <div><i class="">
+                    <span class="material-symbols-outlined text-center pt-2 fs-6">
+                        precision_manufacturing
+                    </span>
+                    
+                    
+                    
+                </i>
+            </div>Shipped</li> <li class="step {% if i.status > 2 %}
+                active
+                {% endif %}">
+                <div>
+                    <i class="bi bi-truck"><span class="material-symbols-outlined text-center pt-2 fs-6">
+                        local_shipping
+                    </span></i>
+                </div> Out for delivery </li> 
+                <li class="step {% if i.status > 3%}
+                    active
+                    {% endif %}"> <div>
+                        
+                        <i class="fas  "><span class="material-symbols-outlined text-center pt-2 fs-6">
+                            celebration
+                        </span></i></div> Delivered </li> 
+                    </ul>
+                    
+                    <h5 class="text-center">
+                        {% if i.status == 1 %} Your Order has been Placed successfully 
+                        
+                        {% elif i.status == 2 %}
+                        Your Order has been Dispatched and Shipped
+                        
+                    {% elif i.status == 3 %}
+                         Your Order is out for Delivery!!!
+            {% elif i.status == 4 %}
+                    Your Order is  Delivered!!!
+            
+                    {% elif i.status == 5 %}
+                    Your Order is cancelled
+            
+                    {% endif %}
+                </h5>
+                
+                
+                {% if not i.agree and i.status == 1  %}
+                <div class="container text-center">
+                    <h5>But You are not yet Confirm it.</h5>
+                    <a href="/permit/{{i.guestid}}" class="btn btn-success mb-3">Click to confirm</a>
+                </div>
+                {% endif %}
+                
+                
+            </div>
+
+        </a>
+            {% endfor %}
+            
+            {% endif %}
+
+
+            {% if err %}
+            
+            <h5 class="text-center text-danger mb-5">{{err}} !</h5>
+            
+            
+            {% endif %}
+
+
+        
+      </div>
+    
+    
+    
+</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+</html>
+    {% endblock  %}
+
+
