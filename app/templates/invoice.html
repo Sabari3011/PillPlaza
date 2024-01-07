@@ -32,7 +32,7 @@
                 <div class="card-body ">
                     <div class="row justify-content-between mb-3">
                         <div class="text-center"> <h6 class=" mb-0 fw-bold">Order Summary</h6> </div>
-                        <div class="col-auto  fw-bold ms-sm-auto"> <small>Id: {{ord.orderid}}</small> </div>
+                        <div class="col-auto  fw-bold ms-sm-auto"> Id:<small class="text-danger"> {{ord.orderid}}</small> </div>
                         
                         {% if ord.status == 1 %} 
                         <div class="row-auto  fw-bold text-dark"> <small>Status: <span class="text-success">Order Placed</span></small> </div>
@@ -48,6 +48,7 @@
                         
                         {% endif %}
 
+                        <div class="row-auto  fw-bold text-dark"> <small>Contact No: <span class="text-success">{{ord.contact}}</span></small> </div>
 
 
 
@@ -84,11 +85,11 @@
                                     
                                     <div class="row mb-4">
                                         
-                                            <form method="post" class="input-group">
+                                            <form method="post" class="input-group formclass">
                                                     {% csrf_token %}
                                                 <div class="col-sm mb-3">
                                                    
-                                                    <input required type="text" name="review" class="form-control" id="formGroupExampleInput" placeholder="Your Review">
+                                                    <input  type="text" name="review" class="form-control review" id="review"  placeholder="Your Review">
                                                   </div>
                                                   <input type="hidden" name="id" value={{product.product.id}}>
 
@@ -107,7 +108,8 @@
                                                         <button class=" btn btn-primary mx-auto" type="submit">add</button>
                                                     </div>
                                                 </div>
-                                              </form>
+                                            </form>
+                                            <p class="text-danger fw-bold error p-0 m-0 ms-3"></p>
                                               
                                               
                                               
@@ -198,7 +200,30 @@
         
         
     </div>
-        
+        <script>
+            let form= document.getElementsByClassName('formclass')
+            for (let i = 0; i < form.length; i++) {
+            form[i].addEventListener('submit',(e)=>{
+                const parent=form[i].parentElement;
+                const err = parent.querySelector('.error')
+                review=form[i].querySelector('.review').value.trim();
+
+                if (review === ""){
+                    err.innerText = "Review not be empty"
+                    e.preventDefault();
+                }
+                else if (review.length < 3){
+                    err.innerText = "Review require atleast 4 characters"
+                    e.preventDefault();
+                }
+                else{
+                    err.innerText = ""
+
+                }
+
+            });
+            }
+        </script>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 

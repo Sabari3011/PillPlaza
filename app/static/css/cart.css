@@ -12,8 +12,8 @@ body{
 }
 .card{
     margin: auto;
-    max-width: 950px;
-    width: 90%;
+    max-width: 1050px;
+    width: 100%;
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 1rem;
     border: transparent;
@@ -40,7 +40,7 @@ body{
     background-color: #ddd;
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
-    padding: 4vh;
+    padding: 20px;
     color: rgb(65, 65, 65);
 }
 @media(max-width:767px){
@@ -107,7 +107,7 @@ select{
 input{
     border: 1px solid rgba(0, 0, 0, 0.137);
     padding: 1vh;
-    margin-bottom: 4vh;
+    margin-bottom: 0px;
     outline: none;
     width: 100%;
     background-color: rgb(247, 247, 247);

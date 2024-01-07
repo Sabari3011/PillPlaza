@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login & Registration Form</title>
+  <title>Login</title>
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -12,7 +12,8 @@
  {% load static  %}
   <link rel="stylesheet" href="{% static 'css/home.css'%}">
 </head>
-<body>
+<body style="overflow: hidden;">
+  <video src="..//static/ImportantImg/video (2160p).mp4" autoplay muted loop class="d-flex" style="z-index: 0;  position: fixed; left: -80%; top: -80%;" ></video>
   <div class="container">
     <input type="checkbox" id="check">
     <div class="login form">
@@ -20,12 +21,19 @@
 
 
 
-      <form action="/login/" method="POST" >
+      <form id="loginform" action="/login/" method="POST" >
         {% csrf_token %}
         <h5 class="text-danger">{{err}}</h5>
-        <input  name="loginmail" autocomplete="off" id="logemail" type="email" title="Please Enter a valid Email" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"  placeholder="Enter your email" required>
-        
-        <input id="password-field" required name="loginpass" class="mb-0" autocomplete="off"  type="password" placeholder="Enter your password">
+        <div class="mb-3">
+
+          <input class="mb-0 nospace" maxlength="45" name="loginmail" autocomplete="off" id="logemail" type="text"   placeholder="Enter your email" >
+          <p class="p-0 m-0  ms-1 text-danger" id="emailerr"></p>
+        </div>
+        <div class="mb-1">
+
+          <input id="password-field" maxlength="15" name="loginpass"  class="mb-0 nospace" autocomplete="off"  type="password" placeholder="Enter your password">
+          <p class="p-0 m-0  ms-1 text-danger" id="pwerr"></p>
+        </div>
         <span toggle="#password-field"  class="fa fa-fw fa-eye field-icon toggle-password d-block float-end me-4 pt-1  pe-1 mb-2 user-select-none">show</span>
         <a href="/getmail">Forgot password?</a>
         <input type="submit" class="button" value="Login">
@@ -33,7 +41,7 @@
       
       <div class="signup">
         <span class="signup">Don't have an account?
-         <label for="check">Signup</label>
+         <a href="/registration">Register Now</a>
         </span>
       </div>
       <div class="signup">
@@ -44,41 +52,7 @@
     </div>
 
 
-    <div class="registration form">
-      <header>Signup</header>
-      <form action="/register/" method="POST">
-        
-        {% csrf_token %}
-        <input required name="email" id="email" autocomplete="off" title="Please Enter a valid Email" pattern="^([a-z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-z0-9\-]+\.)+))([a-z]{2,4}|[0-9]{1,3})(\]?)$" type="text" placeholder="Enter your email">
-        <input required name="name" autocomplete="off"  id="uname" pattern="[A-Za-z\s]+"  type="text" placeholder="Enter Your name">
-        <p id="numerr" class="err invisible">Enter a valid number</p>
-        <input required autocomplete="off"  name="contactno" id="contact" pattern="[0-9]{10}" maxlength="10" inputmode="numeric"  placeholder="Enter your Contact no">
-        <input required autocomplete="off" class="pw1" title="
-                      minimum length 8
-        Should contain at least a capital letter
-        Should contain at least a small letter
-        Should contain at least a number
-        Should contain at least a special character
-        " pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}$" name="password" id="pw1" autocomplete="off"  type="password" placeholder="Create a password">
-        <span toggle=".pw1"  class="fa fa-fw fa-eye field-icon toggle-password d-block float-end me-4 pt-1  pe-1 mb-2 user-select-none">show</span>
-
-        <p id="pwerr"  class="err invisible">Confirm password not matched</p>
-        <input class="pw1" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}$" autocomplete="off"  id="pw2" type="password" placeholder="Confirm your password">
-        
-        <input required  id="signupbtn"  type="submit" class="button" value="Signup">
-      </form>
-      <div class="signup">
-        <span class="signup">Already have an account?
-         <label for="check">Login</label>
-        </span>
-      </div>
-      <div class="signup">
-        <span class="signup">Back to 
-          <a href="/">Home </a>?
-        </span>
-      </div>
-
-    </div>
+    
   </div>
   <script src="{% static 'js/home.js'%}"> </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
@@ -88,6 +62,18 @@
   
 
 $(function() {
+
+// no space
+$('.nospace').keydown(function (e) {
+
+  var key = e.keyCode;
+if (key ==32 ) {
+
+e.preventDefault();
+
+}
+
+});
 
 $('#uname').keydown(function (e) {
 
@@ -117,10 +103,8 @@ if (e.ctrlKey || e.altKey || e.shiftKey) {
   e.preventDefault();
   
 } else {
-
   var key = e.keyCode;
-  
-  if (!((key == 8) || (key == 13) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57))) {
+  if (!((key == 8) || (key == 13)  || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57))) {
   
     e.preventDefault();
     
@@ -175,6 +159,62 @@ if (input.attr("type") == "password") {
 }
 });
 </script>
+
+<script>
+const loginform= document.getElementById('loginform');
+const logemail = document.getElementById('logemail');
+const password = document.getElementById('password-field');
+
+const emailerr = document.getElementById('emailerr');
+const pwerr = document.getElementById('pwerr');
+
+loginform.addEventListener('submit',(e)=>{
+const emailval=logemail.value.trim()
+const passwordval=password.value.trim()
+let errors=true;
+
+if(emailval === '' ){
+  emailerr.innerHTML="Please enter your email"
+  errors = false
+}
+else if (!(validateEmail(emailval))){
+  emailerr.innerHTML="Please enter a valid email"
+  errors = false
+
+}
+else{
+  emailerr.innerHTML=""
+}
+
+if(passwordval === ''){
+  pwerr.innerHTML="Please enter your Password"
+  errors = false
+
+}
+else{
+  pwerr.innerHTML=""
+}
+
+if (!errors){
+  e.preventDefault()
+  
+}
+
+
+})
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+
+
+</script>
+
 
 
 </body>

@@ -69,12 +69,10 @@
           {% endif %}
         </div>
         <div class="float-end me-2 ">
-          <i class="fa fa-star text-warning"> <span class="text-dark fw-bold"> {{item.ratings}}</span></i>
+          <i class="fa fa-star text-warning"> <span class="text-dark fw-bold me-1"> {{item.ratings|floatformat }}</span></i>
         </div>
         <img src="{{item.ProductImage.url}}" class="card-img-top" alt="{{item.ProductImage}}">
-        {% comment %} <div class=" progress mx-4 mt-1" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" style="width:{{item.ratings|mul:20}}%">Review {{item.ratings}} of 5</div>
-          </div> {% endcomment %}
+        
         <div class="card-body">
             <h4 class="card-title">{{item.name}}</h4>
             <h5 class="fw-bold">&#8377;{{item.sellingprice}}  <small class="text-secondary text-decoration-line-through fs-6">&#8377;{{item.markedprice}}</small></h5>

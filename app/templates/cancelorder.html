@@ -16,13 +16,17 @@
     
     <div class="login form">
       <header>Refund form</header>
-      <form action="/update/refund" method="POST">
+      <form action="/update/refund" id="formid" method="POST">
         {% csrf_token %}
-        <input required name="upi" type="text" placeholder="Enter UPI id">
-        <textarea class="form-control" name="reason" id="exampleFormControlTextarea1" placeholder="Reason for cancellation" minlength="10" rows="3"></textarea>
-        {% comment %} <input required name="reason" class="textwrap"   type="text" placeholder="Reason for cancellation" style="height:100px"> {% endcomment %}
-        <p class="text-dark   fs-6">*Payment will Refunded within 2-3 working days</p>
-        <input required id="signupbtn"  type="submit" class="btn btn-danger mt-2"  value="Cancel Order">
+        <label for="upi"  class="fw-bold ms-1">UPI id :</label>
+        <input  id="upi" class="mb-0 nospace" name="upi" type="text" placeholder="Enter UPI id">
+        <p id="upierr" class="text-danger m-0 p-0 ms-1"></p>
+        <label for="reason"  class="fw-bold ms-1 mt-3">Reason for cancellation :</label>
+        <textarea class="form-control onespace"  name="reason" id="reason" placeholder="Your valuable Reason for cancellation" rows="3"></textarea>
+        <p id="reasonerr" class="text-danger m-0 p-0 ms-1 mb-2"></p>
+       
+        <p class="text-dark  mt-3 fs-6">*Payment will Refunded within 2-3 working days</p>
+        <input  id="signupbtn"  type="submit" class="btn btn-danger mt-2"  value="Cancel Order">
       </form>
       <div class="signup">
         <span class="signup">Go Back?
@@ -31,7 +35,115 @@
       </div>
     </div>
     </div>
+
+    <script>
+const form = document.getElementById('formid')
+      form.addEventListener('submit',(e)=>{
+        const upi= document.getElementById('upi').value.trim()
+        const reason=document.getElementById('reason').value.trim()
+        const upierr = document.getElementById('upierr')
+        const reasonerr = document.getElementById('reasonerr')
+        if (upi == '' ){
+          upierr.innerText = "Please enter your UPI id"
+          e.preventDefault()
+        }
+        else if(! validateUpi(upi)){
+          upierr.innerText = "Enter a valid UPI !!!"
+          
+          e.preventDefault()
+        }
+        else
+        upierr.innerText = ""
+      
+      if(reason ==""  ){
+        reasonerr.innerText = "Please enter your valuable Reason"
+        e.preventDefault()
+          
+        }
+      else if(reason =="" || reason.length < 5 ){
+        reasonerr.innerText = "Reason must contain atleast 5 character"
+        e.preventDefault()
+          
+        }
+        else{
+          reasonerr.innerText = ""
+          
+        }
+
+      })
+
+
+
+
+
+      const validateUpi = (id) => {
+  return String(id)
+    .toLowerCase()
+    .match(
+      /^[a-zA-Z0-9.\-_]{3,25}@[a-zA-Z._]{2,25}$/
+    );
+};
+    </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+<script>
+  // no space
+$('.nospace').keydown(function (e) {
+
+var key = e.keyCode;
+if (key ==32 ) {
+
+e.preventDefault();
+
+}
+
+
+});
+
+// one space 
+
+
+$('.onespace').keydown(function (e) {
+target= e.target.value
+targetlength=e.target.value.length
+last=target[targetlength-1]
+console.log(last);
+if (e.ctrlKey || e.altKey) {
+
+  e.preventDefault();
+  
+} else {
+
+  var key = e.keyCode;
+  if((targetlength == 0 &&  key == 32) || (last === " " && key == 32)  ){
+      e.preventDefault();
+  }
+ else if  (targetlength == " " && key == 32) {
+      e.preventDefault();
+  }
+  else if (key > 144 && (((key == 191) || (key == 188 )   || (key == 190)  ) &&( last=="," || last == "." || last=="/") )){
+    e.preventDefault();
+}
+else if (key == 144 && !((key == 191) || (key == 188 )   || (key == 190) ))
+{    
+    e.preventDefault();
+}    
+//   else if (!((key == 8) || (key == 13) || (key == 9) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+  
+//     e.preventDefault();
+    
+//   }
+  
+
+}
+
+});
+
+
+</script>
+
 </body>
 </html>

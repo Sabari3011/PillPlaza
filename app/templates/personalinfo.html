@@ -1,0 +1,820 @@
+
+<!DOCTYPE html>
+{% load static  %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>personalInfo</title>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <link rel="stylesheet" href="{% static 'css/lander.css'%}">   
+   
+    <style>
+        .field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: -25px;
+  position: relative;
+  padding-right: 5px;
+  z-index: 2;
+}
+    </style>
+
+</head>
+
+<body style="background-color :#009579">
+    
+  <div class="container ">
+      <h1 class="text-center text-light fw-bold mt-4">Personal Info</h1>
+      <hr class="text-dark">
+
+  
+      <div class="card mt-3 ">
+        {% if err %}
+<h5 class="text-center text-danger fw-bold mt-1">User Already exist ! please login .</h5>
+{% endif %}
+          <div class="card-body">
+              <form class="row g-3" id="form"  action="" method="POST"  >
+
+                  {% csrf_token %}
+                  <div class="col-md-6">
+                    <label for="name" class="form-label fw-bolder">Name</label>
+                    <input   placeholder="eg. John" disabled readonly autocomplete="off" value="{{personal.name}}" id="name" name="name" type="text" class="form-control" >
+                    <div class="error text-danger ms-1"></div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email" class="form-label fw-bolder">Email</label>
+                  <input  name="email" disabled readonly  type="text" class="form-control" placeholder="eg . xyz@gmail.com" id="email">
+                  <div class="error text-danger ms-1"></div>
+
+                </div>
+                <div class="col-md-6">
+                  <label for="contactno" class="form-label fw-bolder">Contact number</label>
+                  <div class="input-group">
+                    <span class="input-group-text " id="basic-addon1">+91</span>
+                      <input   name="contactno"  maxlength="10" inputmode="numeric" class="form-control num" placeholder="eg . 9876543210" id="contactno">
+                    </div>
+                  <div class="error text-danger ms-1" id="conterr"></div>
+                </div>
+                  <div class="col-md-6">
+                    <label for="dob"  class="form-label fw-bolder">DOB</label>
+                    <input  type="date" name="dob" value="{{personal.dob|date:'Y-m-d'}}" class="form-control num" id="dob">
+                    <div class="error text-danger ms-1"></div>
+                    
+                </div>
+                  <div class="col-md-3 d-none">
+                    <label for="weight"  class="form-label fw-bolder">Weight</label>
+                    <input   min="40" name="weight" placeholder="eg . 53"   class="form-control num" inputmode="numeric" maxlength="3" id="weight">
+                    <div class="error text-danger ms-1"></div>
+
+                </div>
+                  
+
+                
+
+
+
+
+                  <div class="col-12">
+                    <label for="address" class="form-label fw-bolder ">Address</label>
+                    <input  name="address" maxlength="70" type="text" class="form-control onespace"  id="address" placeholder="eg. 1234 Main St">
+                    <div class="error text-danger ms-1"></div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="landmark" class="form-label fw-bolder ">Landmark</label>
+                    <input  name="landmark" maxlength="20" type="text" class="form-control onespace" id="landmark"  placeholder="eg. near SBI bank">
+                    <div class="error text-danger ms-1"></div>
+                </div>
+
+                  <div class="col-md-6 ">
+                    <label for="pincode" class="form-label fw-bolder">Pincode</label>
+                    <input  name="pincode"  maxlength="6" inputmode="numeric"  placeholder="Enter your Zipcode" class="form-control num" id="pincode">
+                    <div class="error text-danger ms-1" id="pincodeerr"></div>
+                </div>
+               
+              <div class="col-md-6">
+                <label for="state" class="form-label fw-bolder">State</label>
+
+                <input readonly name="state" type="text" class="form-control" id="state" placeholder="eg. Tamilnadu" /> 
+                  
+                <div class="error text-danger ms-1"></div>
+            </div>
+
+
+              <div class="col-md-6">
+                <label for="district" class="form-label fw-bolder">District</label>
+                <input readonly name="district" type="text" class="form-control" id="district" placeholder="eg. Erode" /> 
+                <div class="error text-danger ms-1"></div>
+            </div>
+
+            
+                  
+  
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4">Update</button>
+                  </div>
+
+
+                </form>
+  
+                
+                <div class="d-flex align-items-center mt-2 justify-content-center">
+                    <h5 class="signup">Back to 
+                        <a href="/">Home </a>?
+                      </h5>
+                  </div>
+                
+          </div>
+        </div>
+  
+      
+      
+  </div>
+  
+  
+  </body>
+
+  <script>
+   document.getElementById('name').value="{{personal.name}}"
+  document.getElementById('dob').value="{{personal.dob|date:'Y-m-d'}}"
+  document.getElementById('weight').value="{{personal.weight}}"
+  document.getElementById('email').value="{{personal.email}}"
+  document.getElementById('contactno').value="{{personal.contact}}"
+ 
+  document.getElementById('address').value="{{personal.address}}"
+  document.getElementById('landmark').value="{{personal.landmark}}"
+  document.getElementById('state').value="{{personal.state}}"
+  document.getElementById('district').value="{{personal.district}}"
+  document.getElementById('pincode').value="{{personal.pincode}}"
+  </script>
+<script>
+ const form= document.getElementById('form')
+ const name= document.getElementById('name')
+ const dob= document.getElementById('dob')
+ const weight= document.getElementById('weight')
+ const email= document.getElementById('email')
+ const contactno= document.getElementById('contactno')
+ 
+ const address= document.getElementById('address')
+ const landmark= document.getElementById('landmark')
+ const state= document.getElementById('state')
+ const district= document.getElementById('district')
+ const pincode= document.getElementById('pincode')
+ const conterr=document.getElementById('conterr')
+
+form.addEventListener('submit',(e)=>{
+
+  
+    if (! validinput()){
+        
+        e.preventDefault()
+    }
+})
+
+function validinput(){
+    const nameVal= name.value.trim()
+    const dobVal= dob.value.trim()
+    const weightVal= weight.value.trim()
+    const emailVal= email.value.trim()
+    const contactnoVal= contactno.value.trim()
+    
+    const addressVal= address.value.trim()
+    const landmarkVal= landmark.value.trim()
+    const stateVal= state.value.trim()
+    const districtVal= district.value.trim()
+    const pincodeVal= pincode.value.trim()
+    let err = true
+    
+    console.log(contactnoVal)
+    if (nameVal === '' || nameVal.length < 3){
+        setErr(name,"Enter a valid Name");
+        err = false
+    }
+   
+    else{
+        setSuccess(name)
+    }
+
+    if (dobVal === ''){
+        setErr(dob,"Please Enter your DOB");
+        err = false
+    }
+    else{
+        let age =new Date().getFullYear() - dobVal.split("-")[0]
+        
+        if (age > 80){
+        setErr(dob,"Please Enter a valid DOB");
+        err = false
+        }
+        else if (age < 18 ){
+            setErr(dob,"Age must be greater then 18");
+            err = false
+        }
+        else
+            setSuccess(dob)
+    }
+    if (weightVal === '' || weightVal > 150 || weightVal < 30){
+        setErr(weight,"Enter a valid Weight");
+        err = false
+    }
+    else
+            setSuccess(weight)
+
+    if (emailVal === ''){
+        setErr(email,"PLease Enter your Email");
+        err = false
+    }
+    else if ( !validateEmail(emailVal)){
+        setErr(email,"Enter a valid Email");
+        err = false
+    }
+    else
+            setSuccess(email)
+
+    if (contactnoVal === ''){
+        // setErr(contactno,"Please Enter your Contact number");
+        conterr.innerText="Please Enter your contact number"
+        err = false
+    }
+    else if (contactnoVal === '' || contactnoVal.length != 10){
+        // setErr(contactno,"Please Enter a valid Contact number");
+        conterr.innerText="Contact number should contain 10 numbers"
+
+        err = false
+    }
+    else if (!( contactnoVal[0] == "6" || contactnoVal[0] == "7" || contactnoVal[0] == "8" || contactnoVal[0] == "9" )){
+        conterr.innerText="Contact number should starts with (6-9)"
+        console.log(contactnoVal[0])
+        err = false
+    }
+    else{
+        // setSuccess(contactno)
+        conterr.innerText="";
+
+    }
+
+    
+
+    
+    if (addressVal === '' ){
+        setErr(address,"PLease Enter your Address");
+        err = false
+    }
+    else if (addressVal === '' || addressVal.length < 15){
+        setErr(address,"PLease Enter a valid Address");
+        err = false
+    }
+    else
+            setSuccess(address)
+
+    if (landmarkVal === '' ){
+        setErr(landmark,"Please Enter your Landmark");
+        err = false
+    }
+    else if (landmarkVal === '' || landmarkVal.length < 10){
+        setErr(landmark,"Please Enter a valid Landmark");
+        err = false
+    }
+    else
+            setSuccess(landmark)
+
+    // if (districtVal === '' || districtVal.length < 4){
+    //     setErr(district,"Enter a valid District");
+    //     err = false
+    // }
+    // else
+    //         setSuccess(district)
+
+    // if (stateVal === '' || stateVal.length < 3){
+    //     setErr(state,"Enter a valid State");
+    //     err = false
+    // }
+    // else
+    //         setSuccess(state)
+
+
+    if (pincodeVal === '' || pincodeVal.length != 6){
+        setErr(pincode,"Enter a valid pincode");
+        err = false
+    }
+    else if (pincodeVal[0] == "0"){
+        setErr(pincode,"Pincode should not starts with 0");
+        err = false
+    }
+    else
+            setSuccess(pincode)
+
+
+
+
+
+    return err ;
+
+    }
+
+
+
+
+function setErr(element,msg){
+    const inputgrp=element.parentElement;
+    const errelement = inputgrp.querySelector('.error');
+    errelement.innerText=msg;
+};
+
+function setSuccess(element){
+    const inputgrp=element.parentElement;
+    const errelement = inputgrp.querySelector('.error');
+    errelement.innerText="";
+};
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+
+</script>
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  
+$(function() {
+
+$('#name').keydown(function (e) {
+
+  if (e.ctrlKey || e.altKey) {
+  
+    e.preventDefault();
+    
+  } else {
+  
+    var key = e.keyCode;
+    
+    if (!((key == 8) || (key == 13) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    
+      e.preventDefault();
+      
+    }
+
+  }
+  
+});
+
+
+$('.num').keydown(function (e) {
+
+if (e.ctrlKey || e.altKey || e.shiftKey) {
+
+  e.preventDefault();
+  
+} else {
+
+  var key = e.keyCode;
+  
+  if (!((key == 8) || (key == 13)  || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57))) {
+  
+    e.preventDefault();
+    
+  }
+
+}
+
+});
+
+
+
+});
+
+// one space 
+
+
+$('.onespace').keydown(function (e) {
+    target= e.target.value
+    targetlength=e.target.value.length
+    last=target[targetlength-1]
+    console.log(last);
+    if (e.ctrlKey || e.altKey) {
+    
+      e.preventDefault();
+      
+    } else {
+    
+      var key = e.keyCode;
+      if((targetlength == 0 &&  key == 32) || (last === " " && key == 32)  ){
+          e.preventDefault();
+      }
+     else if  (targetlength == " " && key == 32) {
+          e.preventDefault();
+      }
+      else if (key > 144 && (((key == 191) || (key == 188 )   || (key == 190)  ) &&( last=="," || last == "." || last=="/") )){
+        e.preventDefault();
+    }
+    else if (key == 144 && !((key == 191) || (key == 188 )   || (key == 190) ))
+    {    
+        e.preventDefault();
+    }    
+//   else if (!((key == 8) || (key == 13) || (key == 9) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+      
+    //     e.preventDefault();
+        
+    //   }
+      
+  
+    }
+    
+  });
+
+
+
+$(document).ready(function(){
+    $("#email").on('change keyup paste',function(e){
+     
+    
+      var start = e.target.selectionStart;
+      
+      //Converting
+      $(this).val($(this).val().toLowerCase());
+      
+      
+      e.target.selectionStart = e.target.selectionEnd = start;
+    })
+})
+
+
+$(".toggle-password").click(function() {
+
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $($(this).attr("toggle"));
+    if (input.attr("type") == "password") {
+      input.attr("type", "text");
+    } else {
+      input.attr("type", "password");
+    }
+  });
+
+</script>
+
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
+<!-- <script>
+
+  var AndraPradesh = ["Anantapur","Chittoor","East Godavari","Guntur","Kadapa","Krishna","Kurnool","Prakasam","Nellore","Srikakulam","Visakhapatnam","Vizianagaram","West Godavari"];
+  var ArunachalPradesh = ["Anjaw","Changlang","Dibang Valley","East Kameng","East Siang","Kra Daadi","Kurung Kumey","Lohit","Longding","Lower Dibang Valley","Lower Subansiri","Namsai","Papum Pare","Siang","Tawang","Tirap","Upper Siang","Upper Subansiri","West Kameng","West Siang","Itanagar"];
+  var Assam = ["Baksa","Barpeta","Biswanath","Bongaigaon","Cachar","Charaideo","Chirang","Darrang","Dhemaji","Dhubri","Dibrugarh","Goalpara","Golaghat","Hailakandi","Hojai","Jorhat","Kamrup Metropolitan","Kamrup (Rural)","Karbi Anglong","Karimganj","Kokrajhar","Lakhimpur","Majuli","Morigaon","Nagaon","Nalbari","Dima Hasao","Sivasagar","Sonitpur","South Salmara Mankachar","Tinsukia","Udalguri","West Karbi Anglong"];
+  var Bihar = ["Araria","Arwal","Aurangabad","Banka","Begusarai","Bhagalpur","Bhojpur","Buxar","Darbhanga","East Champaran","Gaya","Gopalganj","Jamui","Jehanabad","Kaimur","Katihar","Khagaria","Kishanganj","Lakhisarai","Madhepura","Madhubani","Munger","Muzaffarpur","Nalanda","Nawada","Patna","Purnia","Rohtas","Saharsa","Samastipur","Saran","Sheikhpura","Sheohar","Sitamarhi","Siwan","Supaul","Vaishali","West Champaran"];
+  var Chhattisgarh = ["Balod","Baloda Bazar","Balrampur","Bastar","Bemetara","Bijapur","Bilaspur","Dantewada","Dhamtari","Durg","Gariaband","Janjgir Champa","Jashpur","Kabirdham","Kanker","Kondagaon","Korba","Koriya","Mahasamund","Mungeli","Narayanpur","Raigarh","Raipur","Rajnandgaon","Sukma","Surajpur","Surguja"];
+  var Goa = ["North Goa","South Goa"];
+  var Gujarat = ["Ahmedabad","Amreli","Anand","Aravalli","Banaskantha","Bharuch","Bhavnagar","Botad","Chhota Udaipur","Dahod","Dang","Devbhoomi Dwarka","Gandhinagar","Gir Somnath","Jamnagar","Junagadh","Kheda","Kutch","Mahisagar","Mehsana","Morbi","Narmada","Navsari","Panchmahal","Patan","Porbandar","Rajkot","Sabarkantha","Surat","Surendranagar","Tapi","Vadodara","Valsad"];
+  var Haryana = ["Ambala","Bhiwani","Charkhi Dadri","Faridabad","Fatehabad","Gurugram","Hisar","Jhajjar","Jind","Kaithal","Karnal","Kurukshetra","Mahendragarh","Mewat","Palwal","Panchkula","Panipat","Rewari","Rohtak","Sirsa","Sonipat","Yamunanagar"];
+  var HimachalPradesh = ["Bilaspur","Chamba","Hamirpur","Kangra","Kinnaur","Kullu","Lahaul Spiti","Mandi","Shimla","Sirmaur","Solan","Una"];
+  var JammuKashmir = ["Anantnag","Bandipora","Baramulla","Budgam","Doda","Ganderbal","Jammu","Kargil","Kathua","Kishtwar","Kulgam","Kupwara","Leh","Poonch","Pulwama","Rajouri","Ramban","Reasi","Samba","Shopian","Srinagar","Udhampur"];
+  var Jharkhand = ["Bokaro","Chatra","Deoghar","Dhanbad","Dumka","East Singhbhum","Garhwa","Giridih","Godda","Gumla","Hazaribagh","Jamtara","Khunti","Koderma","Latehar","Lohardaga","Pakur","Palamu","Ramgarh","Ranchi","Sahebganj","Seraikela Kharsawan","Simdega","West Singhbhum"];
+  var Karnataka = ["Bagalkot","Bangalore Rural","Bangalore Urban","Belgaum","Bellary","Bidar","Vijayapura","Chamarajanagar","Chikkaballapur","Chikkamagaluru","Chitradurga","Dakshina Kannada","Davanagere","Dharwad","Gadag","Gulbarga","Hassan","Haveri","Kodagu","Kolar","Koppal","Mandya","Mysore","Raichur","Ramanagara","Shimoga","Tumkur","Udupi","Uttara Kannada","Yadgir"];
+  var Kerala = ["Alappuzha","Ernakulam","Idukki","Kannur","Kasaragod","Kollam","Kottayam","Kozhikode","Malappuram","Palakkad","Pathanamthitta","Thiruvananthapuram","Thrissur","Wayanad"];
+  var MadhyaPradesh = ["Agar Malwa","Alirajpur","Anuppur","Ashoknagar","Balaghat","Barwani","Betul","Bhind","Bhopal","Burhanpur","Chhatarpur","Chhindwara","Damoh","Datia","Dewas","Dhar","Dindori","Guna","Gwalior","Harda","Hoshangabad","Indore","Jabalpur","Jhabua","Katni","Khandwa","Khargone","Mandla","Mandsaur","Morena","Narsinghpur","Neemuch","Panna","Raisen","Rajgarh","Ratlam","Rewa","Sagar","Satna",
+  "Sehore","Seoni","Shahdol","Shajapur","Sheopur","Shivpuri","Sidhi","Singrauli","Tikamgarh","Ujjain","Umaria","Vidisha"];
+  var Maharashtra = ["Ahmednagar","Akola","Amravati","Aurangabad","Beed","Bhandara","Buldhana","Chandrapur","Dhule","Gadchiroli","Gondia","Hingoli","Jalgaon","Jalna","Kolhapur","Latur","Mumbai City","Mumbai Suburban","Nagpur","Nanded","Nandurbar","Nashik","Osmanabad","Palghar","Parbhani","Pune","Raigad","Ratnagiri","Sangli","Satara","Sindhudurg","Solapur","Thane","Wardha","Washim","Yavatmal"];
+  var Manipur = ["Bishnupur","Chandel","Churachandpur","Imphal East","Imphal West","Jiribam","Kakching","Kamjong","Kangpokpi","Noney","Pherzawl","Senapati","Tamenglong","Tengnoupal","Thoubal","Ukhrul"];
+  var Meghalaya = ["East Garo Hills","East Jaintia Hills","East Khasi Hills","North Garo Hills","Ri Bhoi","South Garo Hills","South West Garo Hills","South West Khasi Hills","West Garo Hills","West Jaintia Hills","West Khasi Hills"];
+  var Mizoram = ["Aizawl","Champhai","Kolasib","Lawngtlai","Lunglei","Mamit","Saiha","Serchhip","Aizawl","Champhai","Kolasib","Lawngtlai","Lunglei","Mamit","Saiha","Serchhip"];
+  var Nagaland = ["Dimapur","Kiphire","Kohima","Longleng","Mokokchung","Mon","Peren","Phek","Tuensang","Wokha","Zunheboto"];
+  var Odisha = ["Angul","Balangir","Balasore","Bargarh","Bhadrak","Boudh","Cuttack","Debagarh","Dhenkanal","Gajapati","Ganjam","Jagatsinghpur","Jajpur","Jharsuguda","Kalahandi","Kandhamal","Kendrapara","Kendujhar","Khordha","Koraput","Malkangiri","Mayurbhanj","Nabarangpur","Nayagarh","Nuapada","Puri","Rayagada","Sambalpur","Subarnapur","Sundergarh"];
+  var Punjab = ["Amritsar","Barnala","Bathinda","Faridkot","Fatehgarh Sahib","Fazilka","Firozpur","Gurdaspur","Hoshiarpur","Jalandhar","Kapurthala","Ludhiana","Mansa","Moga","Mohali","Muktsar","Pathankot","Patiala","Rupnagar","Sangrur","Shaheed Bhagat Singh Nagar","Tarn Taran"];
+  var Rajasthan = ["Ajmer","Alwar","Banswara","Baran","Barmer","Bharatpur","Bhilwara","Bikaner","Bundi","Chittorgarh","Churu","Dausa","Dholpur","Dungarpur","Ganganagar","Hanumangarh","Jaipur","Jaisalmer","Jalore","Jhalawar","Jhunjhunu","Jodhpur","Karauli","Kota","Nagaur","Pali","Pratapgarh","Rajsamand","Sawai Madhopur","Sikar","Sirohi","Tonk","Udaipur"];
+  var Sikkim = ["East Sikkim","North Sikkim","South Sikkim","West Sikkim"];
+  var TamilNadu = ["Ariyalur","Chennai","Coimbatore","Cuddalore","Dharmapuri","Dindigul","Erode","Kanchipuram","Kanyakumari","Karur","Krishnagiri","Madurai","Nagapattinam","Namakkal","Nilgiris","Perambalur","Pudukkottai","Ramanathapuram","Salem","Sivaganga","Thanjavur","Theni","Thoothukudi","Tiruchirappalli","Tirunelveli","Tiruppur","Tiruvallur","Tiruvannamalai","Tiruvarur","Vellore","Viluppuram","Virudhunagar"];
+  var Telangana = ["Adilabad","Bhadradri Kothagudem","Hyderabad","Jagtial","Jangaon","Jayashankar","Jogulamba","Kamareddy","Karimnagar","Khammam","Komaram Bheem","Mahabubabad","Mahbubnagar","Mancherial","Medak","Medchal","Nagarkurnool","Nalgonda","Nirmal","Nizamabad","Peddapalli","Rajanna Sircilla","Ranga Reddy","Sangareddy","Siddipet","Suryapet","Vikarabad","Wanaparthy","Warangal Rural","Warangal Urban","Yadadri Bhuvanagiri"];
+  var Tripura = ["Dhalai","Gomati","Khowai","North Tripura","Sepahijala","South Tripura","Unakoti","West Tripura"];
+  var UttarPradesh = ["Agra","Aligarh","Allahabad","Ambedkar Nagar","Amethi","Amroha","Auraiya","Azamgarh","Baghpat","Bahraich","Ballia","Balrampur","Banda","Barabanki","Bareilly","Basti","Bhadohi","Bijnor","Budaun","Bulandshahr","Chandauli","Chitrakoot","Deoria","Etah","Etawah","Faizabad","Farrukhabad","Fatehpur","Firozabad","Gautam Buddha Nagar","Ghaziabad","Ghazipur","Gonda","Gorakhpur","Hamirpur","Hapur","Hardoi","Hathras","Jalaun","Jaunpur","Jhansi","Kannauj","Kanpur Dehat","Kanpur Nagar","Kasganj","Kaushambi","Kheri","Kushinagar","Lalitpur","Lucknow","Maharajganj","Mahoba","Mainpuri","Mathura","Mau","Meerut","Mirzapur","Moradabad","Muzaffarnagar","Pilibhit","Pratapgarh","Raebareli","Rampur","Saharanpur","Sambhal","Sant Kabir Nagar","Shahjahanpur","Shamli","Shravasti","Siddharthnagar","Sitapur","Sonbhadra","Sultanpur","Unnao","Varanasi"];
+  var Uttarakhand  = ["Almora","Bageshwar","Chamoli","Champawat","Dehradun","Haridwar","Nainital","Pauri","Pithoragarh","Rudraprayag","Tehri","Udham Singh Nagar","Uttarkashi"];
+  var WestBengal = ["Alipurduar","Bankura","Birbhum","Cooch Behar","Dakshin Dinajpur","Darjeeling","Hooghly","Howrah","Jalpaiguri","Jhargram","Kalimpong","Kolkata","Malda","Murshidabad","Nadia","North 24 Parganas","Paschim Bardhaman","Paschim Medinipur","Purba Bardhaman","Purba Medinipur","Purulia","South 24 Parganas","Uttar Dinajpur"];
+  var AndamanNicobar = ["Nicobar","North Middle Andaman","South Andaman"];
+  var Chandigarh = ["Chandigarh"];
+  var DadraHaveli = ["Dadra Nagar Haveli"];
+  var DamanDiu = ["Daman","Diu"];
+  var Delhi = ["Central Delhi","East Delhi","New Delhi","North Delhi","North East Delhi","North West Delhi","Shahdara","South Delhi","South East Delhi","South West Delhi","West Delhi"];
+  var Lakshadeep = ["Lakshadweep"];
+  var Pondicherry = ["Karaikal","Mahe","Puducherry","Yanam"];
+  
+  
+  $("#state").change(function(){
+    var StateSelected = $(this).val();
+    var optionsList;
+    var htmlString = "<option value='"+ "" +"'>"+ "-- Select District -- " +"</option>";
+  
+    switch (StateSelected) {
+      case "Andra Pradesh":
+          optionsList = AndraPradesh;
+          break;
+      case "Arunachal Pradesh":
+          optionsList = ArunachalPradesh;
+          break;
+      case "Assam":
+          optionsList = Assam;
+          break;
+      case "Bihar":
+          optionsList = Bihar;
+          break;
+      case "Chhattisgarh":
+          optionsList = Chhattisgarh;
+          break;
+      case "Goa":
+          optionsList = Goa;
+          break;
+      case  "Gujarat":
+          optionsList = Gujarat;
+          break;
+      case "Haryana":
+          optionsList = Haryana;
+          break;
+      case "Himachal Pradesh":
+          optionsList = HimachalPradesh;
+          break;
+      case "Jammu and Kashmir":
+          optionsList = JammuKashmir;
+          break;
+      case "Jharkhand":
+          optionsList = Jharkhand;
+          break;
+      case  "Karnataka":
+          optionsList = Karnataka;
+          break;
+      case "Kerala":
+          optionsList = Kerala;
+          break;
+      case  "Madya Pradesh":
+          optionsList = MadhyaPradesh;
+          break;
+      case "Maharashtra":
+          optionsList = Maharashtra;
+          break;
+      case  "Manipur":
+          optionsList = Manipur;
+          break;
+      case "Meghalaya":
+          optionsList = Meghalaya ;
+          break;
+      case  "Mizoram":
+          optionsList = Mizoram;
+          break;
+      case "Nagaland":
+          optionsList = Nagaland;
+          break;
+      case  "Orissa":
+          optionsList = Orissa;
+          break;
+      case "Punjab":
+          optionsList = Punjab;
+          break;
+      case  "Rajasthan":
+          optionsList = Rajasthan;
+          break;
+      case "Sikkim":
+          optionsList = Sikkim;
+          break;
+      case  "Tamil Nadu":
+          optionsList = TamilNadu;
+          break;
+      case  "Telangana":
+          optionsList = Telangana;
+          break;
+      case "Tripura":
+          optionsList = Tripura ;
+          break;
+      case  "Uttaranchal":
+          optionsList = Uttaranchal;
+          break;
+      case  "Uttar Pradesh":
+          optionsList = UttarPradesh;
+          break;
+      case "West Bengal":
+          optionsList = WestBengal;
+          break;
+      case  "Andaman and Nicobar Islands":
+          optionsList = AndamanNicobar;
+          break;
+      case "Chandigarh":
+          optionsList = Chandigarh;
+          break;
+      case  "Dadar and Nagar Haveli":
+          optionsList = DadraHaveli;
+          break;
+      case "Daman and Diu":
+          optionsList = DamanDiu;
+          break;
+      case  "Delhi":
+          optionsList = Delhi;
+          break;
+      case "Lakshadeep":
+          optionsList = Lakshadeep ;
+          break;
+      case  "Pondicherry":
+          optionsList = Pondicherry;
+          break;
+  }
+  
+  
+    for(var i = 0; i < optionsList.length; i++){
+      htmlString = htmlString+"<option value='"+ optionsList[i] +"'>"+ optionsList[i] +"</option>";
+    }
+    $("#district").html(htmlString);
+  
+  });
+
+  function setdefault(){
+    var StateSelected = "{{personal.state}}";
+    var optionsList;
+    var htmlString = "<option value='"+ "" +"'>"+ "-- Select District -- " +"</option>";
+  
+    switch (StateSelected) {
+      case "Andra Pradesh":
+          optionsList = AndraPradesh;
+          break;
+      case "Arunachal Pradesh":
+          optionsList = ArunachalPradesh;
+          break;
+      case "Assam":
+          optionsList = Assam;
+          break;
+      case "Bihar":
+          optionsList = Bihar;
+          break;
+      case "Chhattisgarh":
+          optionsList = Chhattisgarh;
+          break;
+      case "Goa":
+          optionsList = Goa;
+          break;
+      case  "Gujarat":
+          optionsList = Gujarat;
+          break;
+      case "Haryana":
+          optionsList = Haryana;
+          break;
+      case "Himachal Pradesh":
+          optionsList = HimachalPradesh;
+          break;
+      case "Jammu and Kashmir":
+          optionsList = JammuKashmir;
+          break;
+      case "Jharkhand":
+          optionsList = Jharkhand;
+          break;
+      case  "Karnataka":
+          optionsList = Karnataka;
+          break;
+      case "Kerala":
+          optionsList = Kerala;
+          break;
+      case  "Madya Pradesh":
+          optionsList = MadhyaPradesh;
+          break;
+      case "Maharashtra":
+          optionsList = Maharashtra;
+          break;
+      case  "Manipur":
+          optionsList = Manipur;
+          break;
+      case "Meghalaya":
+          optionsList = Meghalaya ;
+          break;
+      case  "Mizoram":
+          optionsList = Mizoram;
+          break;
+      case "Nagaland":
+          optionsList = Nagaland;
+          break;
+      case  "Orissa":
+          optionsList = Orissa;
+          break;
+      case "Punjab":
+          optionsList = Punjab;
+          break;
+      case  "Rajasthan":
+          optionsList = Rajasthan;
+          break;
+      case "Sikkim":
+          optionsList = Sikkim;
+          break;
+      case  "Tamil Nadu":
+          optionsList = TamilNadu;
+          break;
+      case  "Telangana":
+          optionsList = Telangana;
+          break;
+      case "Tripura":
+          optionsList = Tripura ;
+          break;
+      case  "Uttaranchal":
+          optionsList = Uttaranchal;
+          break;
+      case  "Uttar Pradesh":
+          optionsList = UttarPradesh;
+          break;
+      case "West Bengal":
+          optionsList = WestBengal;
+          break;
+      case  "Andaman and Nicobar Islands":
+          optionsList = AndamanNicobar;
+          break;
+      case "Chandigarh":
+          optionsList = Chandigarh;
+          break;
+      case  "Dadar and Nagar Haveli":
+          optionsList = DadraHaveli;
+          break;
+      case "Daman and Diu":
+          optionsList = DamanDiu;
+          break;
+      case  "Delhi":
+          optionsList = Delhi;
+          break;
+      case "Lakshadeep":
+          optionsList = Lakshadeep ;
+          break;
+      case  "Pondicherry":
+          optionsList = Pondicherry;
+          break;
+  }
+  
+  
+    for(var i = 0; i < optionsList.length; i++){
+      htmlString = htmlString+"<option value='"+ optionsList[i] +"'>"+ optionsList[i] +"</option>";
+    }
+    $("#district").html(htmlString);
+    document.getElementById('district').value="{{personal.district}}"
+  }
+
+  setdefault();
+  
+  </script> -->
+
+
+  
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+
+
+    $('#pincode').on("input", function(){
+        var pincode = $('#pincode').val();
+        if (pincode.length == 6)
+       { 
+        $.getJSON("https://api.postalpincode.in/pincode/"+pincode, function(data){
+            
+            console.log(data[0].Status)
+            if (data[0].Status == "Success"){
+                $('#state').val(data[0].PostOffice[0].State);
+                $('#district').val(data[0].PostOffice[0].District);
+                console.log(data[0].PostOffice[0].State)
+                console.log(data[0].PostOffice[0].District)
+                $('#pincodeerr').text("");
+
+            }
+            else{
+                $('#state').val("");
+                $('#district').val("");
+                $('#pincodeerr').text("Please enter a valid pincode");
+                
+            }
+        })
+    }
+    else if (pincode.length == 0){
+        $('#pincodeerr').text("Please enter your pincode");
+        $('#state').val("");
+         $('#district').val("");
+    }
+    else{
+        $('#pincodeerr').text("Pincode must contains 6 numbers");
+        $('#state').val("");
+        $('#district').val("");
+    }
+
+
+    })
+</script>
+
+
+</html>
+
+

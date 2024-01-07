@@ -22,12 +22,13 @@
     <hr class="text-dark">
 
     <div class="card py-4">
-        <form  action="" method="GET" class="card-body row  d-flex align-items-center justify-content-center">
+        <form  action="" id="formid" method="GET" class="card-body row  d-flex align-items-center justify-content-center">
         
 
                 
           <div class="col-8 mt-1">
-    <input type="text" class="form-control" placeholder="Enter your Order Id" name="orderid">
+    <input type="text" id="orderid" class="form-control" placeholder="Enter your Order Id" name="orderid">
+    <p class="text-danger p-0 m-0 ms-1 fw-bold" id="orderr"></p>
   </div>
   <div class="col-12 text-center mt-3">
     <button type="submit" class="btn btn-primary px-5">Track now</button>
@@ -227,7 +228,25 @@
 </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        form = document.getElementById('formid');
+        form.addEventListener('submit',(e)=>{
+            orderid=  document.getElementById('orderid').value.trim();
+            orderr=  document.getElementById('orderr')
 
+            if(orderid === ""){
+                orderr.innerText="Please Enter your Orderid"
+                e.preventDefault();
+            }
+            
+            else if(orderid.length < 12){
+                orderr.innerText="Enter a Valid Orderid !"
+                e.preventDefault();
+            }
+            
+        })
+
+    </script>
 </body>
 </html>
     {% endblock  %}

@@ -46,7 +46,7 @@
                                                         <div class="">
                                                             <div class="p-ratings float-end">
                                                              <i class="fa fa-star "></i>
-                                                          <span class="ml-1 ">{{product.ratings}}</span> 
+                                                          <span class="ml-1 text-dark fw-bold">{{product.ratings|floatformat}}</span> 
                                                         </div>
                                                         <div>
                                                         <div class="about"> 
@@ -62,8 +62,8 @@
                                 <input type="hidden" name="id" value={{product.id}}>
                                 <p id="errtxt" class="text-danger fw-bold d-none">*Only {{product.stock}} Available</p>
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label text-danger fw-bold">*Upload Your Prescription</label>
-                                    <input class="form-control border border-success" name="image" required type="file" id="formFile">
+                                    <label for="formFile"   class="form-label text-danger fw-bold">*Upload Your Prescription</label>
+                                    <input class="form-control border border-success" name="image" accept="image/png, image/gif, image/jpeg" required type="file" id="formFile">
                                     <p class="text-muted mt-1">Once Quantity entered cannot be altered further</p>
                                   </div>
                                 {% if product.stock > 0 %}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+ {% load static  %}
+  <link rel="stylesheet" href="{% static 'css/home.css'%}">
+</head>
+<body>
+  <div class="container">
+    <input type="checkbox" id="check">
+    <div class="login form">
+      <header>Admin Login</header>
+
+
+
+      <form id="loginform" action="/login/" method="POST" >
+        {% csrf_token %}
+        <h5 class="text-danger">{{err}}</h5>
+        <p class="p-0 m-0 text-danger" id="emailerr"></p>
+        <input  name="loginmail" autocomplete="off" id="logemail" type="text"   placeholder="Enter your email" >
+        <p class="p-0 m-0 text-danger" id="pwerr"></p>
+        <input id="password-field"  name="loginpass"  class="mb-0" autocomplete="off"  type="password" placeholder="Enter your password">
+        <span toggle="#password-field"  class="fa fa-fw fa-eye field-icon toggle-password d-block float-end me-4 pt-1  pe-1 mb-2 user-select-none">show</span>
+        <a href="/getmail">Forgot password?</a>
+        <input type="submit" class="button" value="Login">
+      </form>
+      
+      <div class="signup">
+        <span class="signup">Don't have an account?
+         <a href="/registration">Signup</a>
+        </span>
+      </div>
+      <div class="signup">
+        <span class="signup">Back to 
+          <a href="/">Home </a>?
+        </span>
+      </div>
+    </div>
+
+
+    
+  </div>
+  <script src="{% static 'js/home.js'%}"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+  
+
+$(function() {
+
+$('#uname').keydown(function (e) {
+
+  if (e.ctrlKey || e.altKey) {
+  
+    e.preventDefault();
+    
+  } else {
+  
+    var key = e.keyCode;
+    
+    if (!((key == 8) || (key == 13) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    
+      e.preventDefault();
+      
+    }
+
+  }
+  
+});
+
+
+$('#contact').keydown(function (e) {
+
+if (e.ctrlKey || e.altKey || e.shiftKey) {
+
+  e.preventDefault();
+  
+} else {
+  var key = e.keyCode;
+  if (!((key == 8) || (key == 13)  || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57))) {
+  
+    e.preventDefault();
+    
+  }
+
+}
+
+});
+
+
+
+});
+
+
+$(document).ready(function(){
+    $("#email").on('change keyup paste',function(e){
+     
+    
+      var start = e.target.selectionStart;
+      
+      //Converting
+      $(this).val($(this).val().toLowerCase());
+      
+      
+      e.target.selectionStart = e.target.selectionEnd = start;
+    })
+})
+
+$(document).ready(function(){
+    $("#logemail").on('change keyup paste',function(e){
+     
+    
+      var start = e.target.selectionStart;
+      
+      //Converting
+      $(this).val($(this).val().toLowerCase());
+      
+      
+      e.target.selectionStart = e.target.selectionEnd = start;
+    })
+})
+
+
+$(".toggle-password").click(function() {
+
+$(this).toggleClass("fa-eye fa-eye-slash");
+var input = $($(this).attr("toggle"));
+if (input.attr("type") == "password") {
+  input.attr("type", "text");
+} else {
+  input.attr("type", "password");
+}
+});
+</script>
+
+<script>
+const loginform= document.getElementById('loginform');
+const logemail = document.getElementById('logemail');
+const password = document.getElementById('password-field');
+
+const emailerr = document.getElementById('emailerr');
+const pwerr = document.getElementById('pwerr');
+
+loginform.addEventListener('submit',(e)=>{
+const emailval=logemail.value.trim()
+const passwordval=password.value.trim()
+let errors=true;
+
+if(emailval === '' ){
+  emailerr.innerHTML="Please enter a valid email"
+  errors = false
+}
+else if (!(validateEmail(emailval))){
+  emailerr.innerHTML="Please enter a valid email"
+  errors = false
+
+}
+else{
+  emailerr.innerHTML=""
+}
+
+if(passwordval === ''){
+  pwerr.innerHTML="Please enter your Password"
+  errors = false
+
+}
+else{
+  pwerr.innerHTML=""
+}
+
+if (!errors){
+  e.preventDefault()
+  
+}
+
+
+})
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+
+
+</script>
+
+
+
+</body>
+</html>

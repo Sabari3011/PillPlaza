@@ -578,10 +578,13 @@ body.dark .search-field i{
 
                             {% if user.is_authenticated %}
                             
+                            <li><a class="dropdown-item" href="/personalinfo">My Info</a></li>
                             <li><a class="dropdown-item" href="/getmail">Change Password</a></li>
                             <li><a class="dropdown-item" href="/logout">Logout</a></li>
+
                             {% else %}
-                            <li><a class="dropdown-item" href="/loginpage">Login / Register</a></li>
+                            <li><a class="dropdown-item" href="/loginpage">Login</a></li>
+                            <li><a class="dropdown-item" href="/registration">Register</a></li>
 
                             {% endif %}
 
@@ -616,10 +619,12 @@ body.dark .search-field i{
                                 {% if user.is_authenticated %}
                                 <li class="fw-bold text-light">{{user.get_username}}</li>
                                 <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/personalinfo">My Info</a></li>
                                 <li><a class="dropdown-item" href="/getmail">Change Password</a></li>
                                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
                                 {% else %}
-                                <li><a class="dropdown-item" href="/loginpage">Login / Register</a></li>
+                                <li><a class="dropdown-item" href="/loginpage">Login</a></li>
+                                <li><a class="dropdown-item" href="/registration">Register</a></li>
     
                                 {% endif %}
     

@@ -16,11 +16,12 @@
     
     <div class="login form">
       <header>Order Verification</header>
-      <form action="/conformorderotp/" method="POST">
+      <form id="formid" action="/conformorderotp/" method="POST">
         {% csrf_token %}
-        <h5 class="text-danger">{{err}}</h5>
-        <input required type="number" name="otp" placeholder="Enter OTP">
-        
+        <h6 class="text-primary">{{msg}}</h6>
+        <h6 class="text-danger">{{err}}</h6>
+        <input  type="text" id="otp" class="num" name="otp" maxlength="6" placeholder="Enter OTP">
+        <p class="text-danger ms-1 " id="otperr"></p>
         <input type="submit" class="button" value="Verify">
       </form>
       <div class="signup">
@@ -31,6 +32,73 @@
     </div>
     </div>
   
+    <script>
+      const form = document.getElementById('formid')
+      form.addEventListener('submit',(e)=>{
+        const otpval= document.getElementById('otp').value.trim()
+        const otperr=document.getElementById('otperr')
+        if (otpval == '' || otpval.length != 6){
+          otperr.innerText = "Enter a valid OTP !!!"
+          e.preventDefault()
+        }
+        else
+           otperr.innerText = ""
+
+
+      })
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  $(function() {
+
+$('.textonly').keydown(function (e) {
+
+  if (e.ctrlKey || e.altKey || e.key == 'Space') {
+  
+    e.preventDefault();
+    
+  } else {
+  
+    var key = e.keyCode;
+    
+    if (!((key == 8) || (key == 13) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    
+      e.preventDefault();
+      
+    }
+
+  }
+  
+});
+
+
+$('.num').keydown(function (e) {
+
+if (e.ctrlKey || e.altKey || e.shiftKey) {
+
+  e.preventDefault();
+  
+} else {
+
+  var key = e.keyCode;
+  
+  if (!((key == 8) || (key == 13)  || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57))) {
+  
+    e.preventDefault();
+    
+  }
+
+}
+
+});
+
+
+
+});
+
+</script>
   <script src="{% static 'js/home.js'%}"> </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

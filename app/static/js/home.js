@@ -1,11 +1,11 @@
 let pw1=document.getElementById('pw1');
 let signup=document.getElementById('signupbtn');
 // let pw2=document.getElementById('pw2');
-let pw2=document.getElementById('pw2').addEventListener("change",displaypwerr);
+// let pw2=document.getElementById('pw2').addEventListener("change",displaypwerr);
 let contactno=document.getElementById('contactno').addEventListener('change',displaynumerr);
 function displaypwerr(){
   let pw1=document.getElementById('pw1');
-   pw2=document.getElementById('pw2');
+  //  pw2=document.getElementById('pw2');
   let pwerr=document.getElementById('pwerr')
   let numvalid=true
  let pwvalid=true

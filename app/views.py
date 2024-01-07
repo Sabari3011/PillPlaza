@@ -119,9 +119,17 @@ def makeuserlogin(req):
         uname=req.POST['loginmail']
         upass=req.POST['loginpass']
         if userlogin(req,uname,upass) :
+            user=authenticate(req, username = uname , password = upass)
+            if user.is_staff :
+                print("staff user")
+                return redirect("/admin")
             return redirect("/")
         else:
-            return render(req,"login.html",{"err":"Invalid Login credentials"})
+            obj=len(User.objects.filter(username = uname))
+            if (obj == 1):
+                return render(req,"login.html",{"err":"Invalid Login credentials"})
+            else :
+                return render(req,"login.html",{"err":"User not exist please Register"})
     return redirect('/loginpage/')
 
 
@@ -165,6 +173,7 @@ def shopcategory(req,name):
         messages.warning(req,"No such category")
         return redirect('shop')
 
+@login_required
 def updatecart(req,str,productid,cartid):
     cart=Cart.objects.filter(user=req.user).get(product_id=productid)
     product=Product.objects.get(id=productid)
@@ -193,10 +202,12 @@ def cartview(req):
         PrescriptiveProduct=PrescriptiveCart.objects.filter(user=user)
         pp=len(PrescriptiveProduct)
         totalAmt=0
+        personal = PersonalInfo.objects.get(email = req.user)
         for i in cart:
             totalAmt +=i.product.sellingprice * i.product_qty
-        return render(req,"cart.html",{"cart":cart,"count":count,"totalAmt":totalAmt,"PrescriptiveProduct" : PrescriptiveProduct,"pp":pp})
+        return render(req,"cart.html",{"cart":cart,"count":count,"totalAmt":totalAmt,"PrescriptiveProduct" : PrescriptiveProduct,"pp":pp,"personal":personal})
     return render(req,"cart.html")
+
 
 def addToCart(req):
     if req.user.is_authenticated :
@@ -216,7 +227,7 @@ def delTemperary(req,id):
     PrescriptiveCart.objects.get(id=id).delete()
     return redirect('cart')
     
-
+@login_required
 def addtotop(req,id):
     if req.user.is_authenticated :
         if not Cart.objects.filter(user=req.user,product=PrescriptiveCart.objects.get(id=id).product):
@@ -231,9 +242,10 @@ def addtotop(req,id):
         return redirect('cart')
     return redirect('cart')
 
+
 def approveCart(req):
     cart=PrescriptiveCart()
-    if req.method == "POST":
+    if req.method == "POST" and req.user.is_authenticated:
         if not (PrescriptiveCart.objects.filter(user=req.user,product=req.POST['id'])):
             cart.user=req.user
             cart.PrescriptionImage=req.FILES.get("image")
@@ -272,15 +284,43 @@ def home(req):
 def loginpage(req):
     return render(req,"login.html")
 
+def registerationpage(req):
+    return render(req,"registration.html")
+
 def sendverifyotp(req):
     if req.method == "POST":
         otp1=req.POST['otp']
         if otp == int(otp1):
+            email = req.session["email"]
+            name = req.session["name"]
+            dob = req.session["dob"]
+            weight = req.session["weight"]
+            contact = req.session["contactno"]
+            address = req.session["address"]
+            landmark = req.session["landmark"]
+            district = req.session['district']
+            state = req.session["state"]
+            pincode = req.session["pincode"]
+
+
             newuser=User.objects.create_user(req.session["email"],req.session["email"],req.session["password"])
             newuser.first_name=req.session["name"]
-            newuser.last_name=req.session["contactno"]
+            
             newuser.save()
             userlogin(req,req.session["email"],req.session["password"])
+            # enter personal details here
+            person = PersonalInfo()
+            person.email= User.objects.get(username = email)
+            person.name = name
+            person.dob = dob
+            person.weight = weight
+            person.contact = contact
+            person.address = address
+            person.landmark = landmark
+            person.district = district
+            person.state = state
+            person.pincode = pincode
+            person.save()
             return redirect("/")
 
     
@@ -295,33 +335,54 @@ def register(req):
         name=req.POST['name']
         contactno=req.POST['contactno']
         password=req.POST['password']
+        dob=req.POST['dob']
+        weight=req.POST['weight']
+        address=req.POST['address']
+        landmark=req.POST['landmark']
+        district=req.POST['district']
+        state=req.POST['state']
+        pincode=req.POST['pincode']
+
+
         req.session["email"]=email
         req.session["name"]=name
         req.session["contactno"]=contactno
         req.session["password"]=password
+        req.session["dob"]=dob
+        req.session["weight"]=weight
+        req.session["address"]=address
+        req.session["landmark"]=landmark
+        req.session["district"]=district
+        req.session["state"]=state
+        req.session["pincode"]=pincode
+
 
 
         try :
             user=User.objects.get(username=email)
             print(email,name,contactno,password)
             
-            return render(req,"login.html",{"err":"User already exist please login"})
+            return render(req,"registration.html",{"err":"User already exist please login"})
         except :
             global otp 
             otp= random.randint(100000,999999)
             sendmail(otp,email)
-            return render(req,'otp.html')
+            return render(req,'otp.html',{"msg": f"OTP sent to {email}" })
 
 def conformOrder(req):
     if req.method == "POST":
         global otp
         otp=random.randint(100000,999999)
-        req.session["address"]=req.POST['address']
+        req.session["address"]=req.POST['address'] +" , "+req.POST['landmark']  +" , "+ req.POST['district']  +" , "+ req.POST['state']
         req.session["pincode"]=req.POST['pincode']
+        req.session["contactno"]=req.POST['contactno']
+        
         sub="Order Conformation For PillPlaza"
         body=f"<#> {otp} is your PillPlaza Order Verifivation code"
         emailhandler(f"{req.user}",sub,body)
-        return redirect("/conformorderotp")
+        # return redirect("/conformorderotp")
+        text = f"OTP send to {req.user}"
+        return render(req,"conformorderotp.html",{"msg":f"OTP send to {req.user}"})
     
 @login_required
 def makepayment(req):
@@ -377,6 +438,7 @@ def addorder(req):
         order.totalprice=totalAmt
         order.totalproducts=count
         order.address=req.session["address"]
+        order.contact=req.session["contactno"]
         order.pincode=req.session["pincode"]
         order.save()
 
@@ -527,9 +589,11 @@ def guestreg(req):
         guest.guestPrescriptionImage=req.FILES.get("image")
         guest.email=req.POST['email']
         guest.mobileno=req.POST['contactno']
-        guest.address=req.POST['address']
+        guest.address=req.POST['address'] +" , "+req.POST['landmark']+" , "+req.POST['district']+" , "+req.POST['state']
+        guest.contact=req.POST['contactno']
         guest.pincode=req.POST['pincode']
         guest.save()
+        print(req.POST['district'] , "******************")
         return redirect('/guestsuccess')
         
 
@@ -585,3 +649,26 @@ def error_404 (req,exception):
 def stats(req):
     stat=Summary.objects.get(id=1)
     return render (req,"stats.html",{"stat":stat})
+
+def adminlogin(req):
+    return render (req,"adminlogin.html")
+
+@login_required
+def personalinfo (req):
+    if req.method == "POST":
+
+        personal = PersonalInfo.objects.get(email = req.user)
+        personal.dob=req.POST['dob']
+        personal.weight=req.POST['weight']
+        personal.contact=req.POST['contactno']
+        personal.address=req.POST['address']
+        personal.landmark=req.POST['landmark']
+        personal.district=req.POST['district']
+        personal.state=req.POST['state']
+        personal.pincode=req.POST['pincode']
+        personal.save()
+        
+        return redirect("/personalinfo/")
+
+    personal= PersonalInfo.objects.get(email = req.user)
+    return render (req,"personalinfo.html",{"personal" : personal })

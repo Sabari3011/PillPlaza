@@ -21,22 +21,16 @@
     
     <div class="login form">
       <header>Verification</header>
-      <form action="" method="POST">
+      <form action="" id="formid" method="POST">
         {% csrf_token %}
-        <input required class="pw1" name="password" id="pw1" title="
-        minimum length 8
-Should contain at least a capital letter
-Should contain at least a small letter
-Should contain at least a number
-Should contain at least a special character
-" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}$" type="password" placeholder="Create a password">
-        <p id="pwerr"  class="err invisible">Confirm password not matched</p>
-        <input required class="pw1" id="pw2" type="password" placeholder="Confirm your password">
+        <p id="pwerr1"  class="err "></p>
+        <input  class="pw1" name="password" id="pw1"  type="password" placeholder="Create a password">
+        <p id="pwerr2"  class="err"></p>
+        <input  class="pw1" id="pw2" type="password" placeholder="Confirm your password">
         <span toggle=".pw1"  class="fa fa-fw fa-eye field-icon toggle-password d-block float-end me-4 pt-1  pe-1 mb-2 user-select-none">show</span>
-
         
 
-        <input required id="signupbtn"  type="submit" class="button" value="Reset">
+        <input  id="signupbtn"  type="submit" class="button" value="Reset">
       </form>
       <div class="signup">
         <span class="signup">Go Home?
@@ -46,6 +40,69 @@ Should contain at least a special character
     </div>
     </div>
   
+<script>
+   const form = document.getElementById('formid')
+      form.addEventListener('submit',(e)=>{
+        const pw1= document.getElementById('pw1').value.trim()
+        const pw2= document.getElementById('pw2').value.trim()
+        
+        const pwerr1=document.getElementById('pwerr1')
+        const pwerr2=document.getElementById('pwerr2')
+        let err = true
+        
+        symbols= /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/  ;
+    if (pw1 === ''){
+        setErr("pw","Password required");
+        err = false
+    }
+    else if (pw1.search(/[a-z]/) == -1){
+        setErr("pw","Password must contains atleast 1 small case");
+        err = false
+    }
+    else if (pw1.search(/[A-Z]/) == -1){
+        setErr("pw","Password must contains atleast 1 upper case");
+        err = false
+    }
+    else if (pw1.search(/[0-9]/) == -1){
+        setErr("pw","Password must contains atleast a number");
+        err = false
+    }
+
+    else if (!symbols.test(pw1)) {
+        setErr("pw","Password must contain at least a Special Symbol") 
+        err = false
+  }
+    else if (pw1.length < 8){
+        setErr("pw","Password must contains atleast 8 characters");
+        err = false
+    }
+
+        else
+           pwerr1.innerText = ""
+
+
+        if (pw2 == '' ){
+          pwerr2.innerText = " Confirm Password Required"
+          err =false
+        }
+        else if (pw1 != pw2){
+          pwerr2.innerText = " Confirm Password not match"
+          err= false
+        }
+        else
+           pwerr2.innerText = ""
+
+        if (!err){
+          e.preventDefault()
+        }
+
+      })
+
+    function setErr(e,err){
+      pwerr1.innerText=err
+    }
+</script>
+
   <script src="{% static 'js/home.js'%}"> </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

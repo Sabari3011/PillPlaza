@@ -42,7 +42,7 @@ class OrderAdmin(admin.ModelAdmin):
         
         if not self.req.user.is_superuser:
             self.exclude=("user","orderid","totalprice","totalproducts","review")
-            self.readonly_fields=("orderid",)
+            self.readonly_fields=("orderid","contact")
         else:
             self.exclude=("",)
             self.readonly_fields=("updated_at",)
@@ -75,7 +75,7 @@ class GuestAdmin(admin.ModelAdmin):
         if not self.req.user.is_superuser and role.replace(" ","") == "deliverypartner":
             
             self.exclude=("guestname","agree","guestid","actualproducts","guestPrescriptionImage")
-            self.readonly_fields=("guestid","mobileno","email","totalproducts","totalprice")
+            self.readonly_fields=("guestid","mobileno","email","totalproducts","totalprice","contact")
         else:
             self.exclude=("",)
             self.readonly_fields=("created_at",)
@@ -87,20 +87,20 @@ class GuestAdmin(admin.ModelAdmin):
         for i in queryset:
             body ="!"
             print(i.email,i.status)
+            host=req.get_host()
             if i.status == 1:
-                host=req.get_host()
                 body=f"""Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} is waiting for your conformation
 click the link and agree {host}/permit/{i.guestid}
             """
 
             if i.status == 2: 
-                body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are Dispatched"
+                body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are Dispatched . Track order in {host}/track/?orderid={i.guestid}"
 
             if i.status == 3: 
-                body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are Out for delivery"
+                body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are Out for delivery . Track order in {host}/track/?orderid={i.guestid}"
 
             if i.status == 4: 
-                body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are Delivered"
+                body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are  . Track order in {host}/track/?orderid={i.guestid}"
 
             views.emailhandler(i.email,"Order Updation from PillPlaza",body)
             
@@ -172,15 +172,17 @@ class RefundAdmin(admin.ModelAdmin):
 
 # registeration
 
+
 admin.site.register(models.Product,ProductAdmin)
 admin.site.register(models.Category , CategoryAdmin)
 admin.site.register(models.Review)
 admin.site.register(models.Cart,CartAdmin)
 admin.site.register(models.PrescriptiveCart,PrescriptiveCartAdmin)
 admin.site.register(models.Orders,OrderAdmin)
-admin.site.register(models.Orderitems,OrderitemAdmin)
+# admin.site.register(models.Orderitems,OrderitemAdmin)
 admin.site.register(models.Refund,RefundAdmin)
 admin.site.register(models.Guest,GuestAdmin)
 admin.site.register(models.GuestProducts , GuestProductsAdmin)
 admin.site.register(models.Summary , SummaryAdmin)
+admin.site.register(models.PersonalInfo)
 # admin.site.register(User)

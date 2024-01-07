@@ -8,6 +8,7 @@ urlpatterns = [
     path('shop/<int:name>',views.shopcategory,name="shop"),
     path('product/<int:id>',views.productview,name="product"),
     path('loginpage/',views.loginpage,name="loginpage"),
+    path('registration/',views.registerationpage),
     path('cart/',views.cartview,name="cart"),
     path('orders/',views.order),
     path('track/',views.track),
@@ -36,6 +37,7 @@ urlpatterns = [
     path('guestsuccess/',views.guestsuccess,name="guestsuccess"),
     path('permit/<str:gtid>',views.permitgt),
     path('guest/<str:action>/<str:gtid>',views.guestaction),
-    
+    path('personalinfo/',views.personalinfo),
+        
 
 ]

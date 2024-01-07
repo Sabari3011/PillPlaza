@@ -7,7 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>GetMail</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
  {% load static  %}
   <link rel="stylesheet" href="{% static 'css/home.css'%}">
 </head>
@@ -16,22 +18,78 @@
     
     <div class="login form">
       <header>Password reset</header>
-      <form action="" method="POST">
+      <form action="" id="formid" method="POST">
         {% csrf_token %}
         <h5 class="text-danger">{{err}}</h5>
-        <input required type="email" name="mail" placeholder="Enter your mail Id">
-        
+        <p class="text-danger m-0 p-0 ms-1" id="errtxt"></p>
+        <input id="email" type="text" name="mail" placeholder="Enter your mail Id">
         <input type="submit" class="button" value="Send Mail">
       </form>
       <div class="signup">
         <span class="signup">Mail not Received ?
          <a href="\loginpage">Try Again</a>
+       
+        </span>
+      </div>
+      <div class="signup">
+        
+        <span class="signup">Back
+         <a href="\" class="text-primary fw-bold">Home</a> ?
         </span>
       </div>
     </div>
     </div>
   
+  
+  
+  <script>
+
+const form=document.getElementById('formid')
+
+form.addEventListener('submit',(e)=>{
+  const email=document.getElementById('email').value.trim()
+  const errtxt = document.getElementById('errtxt')
+  if (email === ""){
+    errtxt.innerText="Email required"
+    e.preventDefault()
+
+  }
+  else if (! validateEmail(email)){
+    errtxt.innerText="Enter a valid Email"
+    e.preventDefault()
+
+  }
+  else
+    errtxt.innerText=""
+})
+
+    const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+  </script>
+  
+  <script>
+$(document).ready(function(){
+    $("#email").on('change keyup paste',function(e){
+     
+    
+      var start = e.target.selectionStart;
+      
+      //Converting
+      $(this).val($(this).val().toLowerCase());
+      
+      
+      e.target.selectionStart = e.target.selectionEnd = start;
+    })
+})
+  </script>
+
   <script src="{% static 'js/home.js'%}"> </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
