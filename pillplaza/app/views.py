@@ -617,7 +617,7 @@ def guestaction(req,action,gtid):
             order.agree=True
             order.save()
         elif action == "disagree":
-            order.delete()
+            order.agree = False
             return render(req,"message.html",{"msg" :"Your Order has been succesfully cancelled"})
         return redirect('/guestsuccess')
 
