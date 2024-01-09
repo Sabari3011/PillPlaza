@@ -57,13 +57,14 @@
 {% comment %} load only for prescriptive {% endcomment %}
                             {% if product.category_type.id == 4 %}
 
-                            <form action="/apply/cart" method="post" enctype="multipart/form-data">
+                            <form action="/apply/cart" method="post" id="formid" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value={{product.id}}>
                                 <p id="errtxt" class="text-danger fw-bold d-none">*Only {{product.stock}} Available</p>
                                 <div class="mb-3">
                                     <label for="formFile"   class="form-label text-danger fw-bold">*Upload Your Prescription</label>
-                                    <input class="form-control border border-success" name="image" accept="image/png, image/gif, image/jpeg" required type="file" id="formFile">
+                                    <input class="form-control border border-success" name="image" accept="image/png, image/gif, image/jpeg ,application/pdf ,application/msword,text/plain" required type="file" id="formFile">
+                                    <p class="text-danger  ms-1" id="err1"></p>
                                     <p class="text-muted mt-1">Once Quantity entered cannot be altered further</p>
                                   </div>
                                 {% if product.stock > 0 %}
@@ -187,6 +188,27 @@
         <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
 
 <script>
+    document.getElementById('formid').addEventListener('submit',(e)=>{
+
+        let formFile = document.getElementById('formFile')
+        let err1 = document.getElementById('err1')
+    if (formFile.value !=""){
+
+        console.log(formFile.files[0].size);
+        if (formFile.files[0].size/1024 > 2000){
+            err1.innerText="File is too big , Please upload file less than 2MB"
+            e.preventDefault();
+        }
+        else{
+            err1.innerText=""
+
+        }
+
+    }
+    
+
+    })
+
    function stockhandler(e){
     let value=document.getElementById('inputbtn').value
     let btn=document.getElementById('cartbtn')

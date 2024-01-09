@@ -21,6 +21,8 @@
   padding-right: 5px;
   z-index: 2;
 }
+
+
     </style>
 
 </head>
@@ -47,7 +49,7 @@
                 </div>
                   <div class="col-md-6">
                     <label for="dob"  class="form-label fw-bolder">DOB</label>
-                    <input  type="date" name="dob"  class="form-control num" id="dob">
+                    <input  type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" name="dob"  placeholder="dd-mm-yyyy" class="form-control num" id="dob">
                     <div class="error text-danger ms-1"></div>
 
                   </div>
@@ -68,7 +70,7 @@
                         <div class="input-group">
 
                           <span class="input-group-text " id="basic-addon1">+91</span>
-                          <input   name="contactno" style="" title="Please Enter a valid Mobile number"  maxlength="10" inputmode="numeric" class="form-control num " placeholder="eg . 9876543210" id="contactno">
+                          <input   name="contactno"  title="Please Enter a valid Mobile number"  maxlength="10" inputmode="numeric" class="form-control num " placeholder="eg . 9876543210" id="contactno">
                         
                         </div>
                         <div style="display: inline-block;" id="conterr" class="error text-danger ms-1"></div>
@@ -131,7 +133,13 @@
                   <div class="error text-danger ms-1"></div>
               </div>
 
-
+ <div  class="col-12 text-center ">
+    <input class="form-check-input " name="termsagree" style="padding: 10px;" type="checkbox"  id="termsagree">
+    <label class="form-check-label  fs-5  p-0" for="termsagree">
+      I agree to these <a href="https://pharmeasy.in/legal/terms-and-conditions">Terms and Conditions</a>
+    </label>
+<p id="termsagreeerr" class="error text-danger " ></p>
+</div>
                   
   
                   <div class="col-12 text-center">
@@ -180,13 +188,25 @@
  const pincode= document.getElementById('pincode')
  const conterr=document.getElementById('conterr')
  const pincodeerr=document.getElementById('pincodeerr')
+ const termsagree=document.getElementById('termsagree');
+ const termsagreeerr=document.getElementById('termsagreeerr');
 
 form.addEventListener('submit',(e)=>{
 
+    
     if (! validinput()){
         
         e.preventDefault()
     }
+    if(! termsagree.checked){
+        e.preventDefault()
+        termsagreeerr.innerText="Please agree our terms & conditions"
+    }
+    else{
+        termsagreeerr.innerText=""
+
+    }
+    console.log(termsagree.checked)
 })
 
 function validinput(){
@@ -662,6 +682,8 @@ $(".toggle-password").click(function() {
       input.attr("type", "password");
     }
   });
+
+  
 
 </script>
 

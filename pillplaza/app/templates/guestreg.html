@@ -33,7 +33,7 @@
 
                   <div class="col-md-6">
                     <label for="dob"  class="form-label fw-bolder">DOB</label>
-                    <input  type="date" name="dob"  class="form-control num" id="dob">
+                    <input  type="text" name="dob" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" placeholder="dd-mm-yyyy"  class="form-control num" id="dob">
                     <div class="error text-danger ms-1"></div>
                   </div>
 
@@ -87,10 +87,19 @@
               
                   <div class="col-md-6 ">
                       <label for="file" class="form-label fw-bolder">Prescription</label>
-                      <input  name="image" class="form-control" accept="image/png, image/gif, image/jpeg" type="file" id="file" placeholder="only Images ">
+                      <input  name="image" class="form-control" accept="image/png, image/gif, image/jpeg ,application/pdf ,application/msword,text/plain" type="file" id="file" placeholder="only Images ">
                       <div class="error text-danger ms-1"></div>
                     </div>
   
+                    <div  class="col-12 text-center ">
+                      <input class="form-check-input " name="termsagree" style="padding: 10px;" type="checkbox"  id="termsagree">
+                      <label class="form-check-label  fs-5  p-0" for="termsagree">
+                        I agree to these <a href="https://pharmeasy.in/legal/terms-and-conditions">Terms and Conditions</a>
+                      </label>
+                  <p id="termsagreeerr" class="error text-danger " ></p>
+                  </div>
+
+
                   <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary">Place Order</button>
                   </div>
@@ -131,6 +140,10 @@ const form= document.getElementById('formid')
  const state= document.getElementById('state')
  const pincode= document.getElementById('pincode')
  const file = document.getElementById('file')
+ const termsagree=document.getElementById('termsagree');
+ const termsagreeerr=document.getElementById('termsagreeerr');
+
+
 
  form.addEventListener('submit',(e)=>{
   
@@ -296,18 +309,34 @@ const form= document.getElementById('formid')
     else
             setSuccess(pincode)
 
-    if (fileVal === ''){
-        setErr(file,"Please upload your Prescription");
+          if (fileVal === ''){
+            setErr(file,"Please upload your Prescription");
+            err = false
+          }
+          
+          else{
+      let   filesize = document.getElementById('file').files[0].size/1024;
+      if(filesize > 2048){
+        setErr(file,"File is too Big , Please upload File less than 2MB");
         err = false
-    }
-    
-    else{
+        console.log(filesize,"kb")
+      }
+      else{
+        setSuccess(file)
 
-      setSuccess(file)
+      }
     }
 
     if (! err){
       e.preventDefault()
+      
+    }
+    if(! termsagree.checked){
+      e.preventDefault()
+      termsagreeerr.innerText = "Please agree our terms and conditions"
+    }
+    else{
+      termsagreeerr.innerText = ""
 
     }
 
