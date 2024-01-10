@@ -70,7 +70,7 @@ class Product(models.Model):
     markedprice=models.IntegerField(null=False,blank=False)
     sellingprice=models.IntegerField(null=False,blank=False)
     created_at=models.DateTimeField(auto_now_add=True)
-    ratings=models.FloatField(default=0)
+    ratings=models.FloatField(default=4)
     noofSales=models.IntegerField(default=0)
     def __str__(self):
         return self.name
@@ -87,11 +87,17 @@ class Product(models.Model):
         
         if len(self.quantity) < 10 :
             raise ValidationError("Quantity should contains atleast 10 character")
-        if self.markedprice <= self.sellingprice :
-            raise ValidationError("MarkedPrice Should greater then SellingPrice")
+
+        if  self.markedprice and self.sellingprice:
+            if self.markedprice <= self.sellingprice :
+                raise ValidationError("MarkedPrice Should greater then SellingPrice")
+        
         
         if len(self.description) < 15 :
             raise ValidationError("Description should contains atleast 15 character")
+        
+        if self.ratings < 0 or self.ratings >= 5 :
+            raise ValidationError("Rating should between 0-5")
         
         
 

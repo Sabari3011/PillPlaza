@@ -4,6 +4,9 @@ from django.http.request import HttpRequest
 from . import models
 from . import views
 from django.contrib.auth.models import User
+from file_resubmit.admin import AdminResubmitImageWidget, AdminResubmitFileWidget
+from django.forms import ModelForm
+
 
 # Register your models here.
 
@@ -14,6 +17,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class  ProductAdmin(admin.ModelAdmin):
     list_display=("name","category_type","stock","superbadge","statusHide","noofSales")
     list_filter=("name","category_type","stock","superbadge","statusHide","noofSales")
+
+
 
 class PrescriptiveCartAdmin(admin.ModelAdmin):
     list_display=("user","product","product_qty","approve")
@@ -171,6 +176,20 @@ class RefundAdmin(admin.ModelAdmin):
     get_orderid.short_description ='Orderid'
 
 # registeration
+# class PageModelForm(ModelForm):
+
+#     class Meta:
+#         model = models.Product
+#         widgets = {
+#             'picture': AdminResubmitImageWidget,
+#             'file': AdminResubmitFileWidget,
+#         }
+#         fields = "__all__"
+
+# class PageAdmin(admin.ModelAdmin):
+#     form = PageModelForm
+
+# admin.site.register(models.Product, PageAdmin)
 
 
 admin.site.register(models.Product,ProductAdmin)
