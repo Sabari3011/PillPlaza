@@ -95,8 +95,7 @@ class GuestAdmin(admin.ModelAdmin):
             host=req.get_host()
             if i.status == 1:
                 body=f"""Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} is waiting for your conformation
-click the link and agree {host}/permit/{i.guestid}
-            """
+click the link and agree {host}/permit/{i.guestid}"""
 
             if i.status == 2: 
                 body=f"Dear {i.guestname} Purchase id:{i.guestid} for {i.totalproducts} products worth Rs.{i.totalprice} are Dispatched . Track order in {host}/track/?orderid={i.guestid}"
